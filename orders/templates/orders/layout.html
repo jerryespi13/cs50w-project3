@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%block title%} {%endblock%}</title>
+    <link rel="Shortcut icon" type="image" href="{% static 'images/logo.png'%}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/utility.css' %}">
+    <script defer src="{% static 'js/index.js' %}"></script>
+
+</head>
+<body >
+    <header>
+        <nav>
+            <aside>
+                <div class="logo"> <a href="#"> <img src="{% static 'images/logo.png'%}" ></a></div>
+                <div class="basketlogo " onclick="basketshow()"><img src="{% static 'images/icons/basket.webp'%}" alt=""></div>
+                <div class="flex-basket hide">
+                    <h2>Tu Carrito</h2>
+                    <!--
+                    <p id="voucher">Apply Voucher code or Gift Card  ></p>
+                    -->
+                    <a>Your basket looks a little empty. Why not check out some of <u id="underline">our unbeatable deals?</u>
+                    <button id="checkout">Checkout</button>
+                </div>
+            </aside>
+            
+            <ul>
+                <div class="itembar"> 
+                    <a class="boxitems" href="#">Pizzas</a>
+                    <a class="boxitems" href="#">Otros</a>
+                    <a class="boxitems" href="#">Carrito</a>
+                    <a class="boxitems" href="#">login</a>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main class="container">
+        {%block main%} 
+        {%endblock%}
+    </main>
+    <footer>
+    </footer>
+</body>
+</html>
