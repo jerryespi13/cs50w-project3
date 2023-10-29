@@ -3,7 +3,8 @@
 
 {% block title %}Pinochio´s Pizza|Login{% endblock %}
 {% block main %}
-<form class="form-login" action="#", method="GET">
+<form class="form-login" action="/login", method="POST">
+    {% csrf_token %}
     <div class="form-input">
         <label for="usuario">Nombre Usuario:</label>
         <input 
@@ -25,18 +26,6 @@
             id="contraseña" 
             aria-describedby="input contraseña" 
             placeholder="Ingresa tu contraseña"
-            autocomplete="off"
-        >
-    </div>
-    
-    <div class="form-input">
-        <label for="contraseña">Confirmar Contraseña:</label>
-        <input 
-            type="password" 
-            name="contraseña" 
-            id="confirmarContraseña" 
-            aria-describedby="input contraseña" 
-            placeholder="Confirma tu contraseña"
             autocomplete="off"
         >
     </div>

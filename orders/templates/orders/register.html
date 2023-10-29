@@ -4,8 +4,8 @@
 {% block title %}Pinochio´s Pizza|Register{% endblock %}
 {% block main %}
 
-<form class="form-register" action="#" method="GET">
-
+<form class="form-register" action="/register" method="POST">
+    {% csrf_token %}
     <div class="form-input">
         <label for="nombre">Nombre:</label>
         <input 
