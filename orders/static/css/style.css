@@ -138,6 +138,7 @@ header {
     flex-wrap: wrap;
     justify-content: left;
     width: 76vw;
+    
 }
 
 .flex-item {
@@ -225,7 +226,7 @@ header {
 
 div.flex-item2{
     display: flex;
-    height: 450px;
+    height: 540px;
     background-color: white;
     width: 225px;
     justify-content: flex-start;
@@ -337,4 +338,66 @@ img.new{
     margin-left: -3em;
     height: 26px;
     width: 33px;
+}
+
+/*Register - login*/
+
+label{
+    font-size: smaller;
+    opacity: 0.5;
+    font-weight: 400;
+}
+
+.form-register, .form-login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.form-input{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    height: 4em;
+}
+.form-input input{
+    height: 100%;
+    border-radius: 50px;
+    background-image: url(../images/side-menu-bg.jpg);
+    background-size: cover;
+    color: #fff;
+    padding-left: 1.2em;
+    border: none;
+}
+
+.form-input input::placeholder{
+    position: absolute;
+    left: 1.2em;
+    color: #fff;
+}
+
+.form-input input:focus{
+    border: #1f8a3a;
+}
+
+.register-button, .login-button{
+    width: 400px;
+    height: 40px;
+    border-radius: 50px 50px;
+    background-color: var(--buttoncolor1);
+    color: white;
+    font-weight: 400;
+    border: var(--buttoncolor1);
+    cursor: pointer;
+}
+
+.formulario{
+    margin: 10px 0px;
+    cursor: pointer;
+}
+
+.formulario a{
+    color: var(--buttoncolor1);
+    text-decoration: none;
 }

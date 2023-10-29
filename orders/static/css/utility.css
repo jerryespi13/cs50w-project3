@@ -232,16 +232,17 @@ span.selected{
         margin-top: 0px;
     }
     nav{
-        height: 130px;
+        height: 70px;
     }
     .boxitems{
         padding: 23px 32px 17px 30px;
+        font-size: small;
     }
-
+    
     .itembar {
         overflow-x: scroll;
-        height: 77px; 
-        margin-left: 8px;
+        height: 100%;
+        margin-left: 0px;
         border: none;
     
     }
@@ -253,6 +254,7 @@ span.selected{
     .flex-container {
         justify-content: center;
         width: 100%;
+        padding-top: 80px;
     }
 
     .flex-item {
@@ -275,5 +277,13 @@ span.selected{
     }
     .hide{
         display: none;
-    }    
+    }  
+    
+    .form-input{
+        width: 70%;
+    }
+
+    .register-button, .login-button{
+        width: 70%;
+    }
 }

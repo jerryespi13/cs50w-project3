@@ -1,6 +1,4 @@
-
 // nav bar active page
-
 const activepage = window.location.pathname;
 const navlinks = document.querySelectorAll('nav ul div a').
 forEach(link =>{

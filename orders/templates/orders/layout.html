@@ -14,28 +14,14 @@
 </head>
 <body >
     <header>
-        <nav>
-            <aside>
-                <div class="logo"> <a href="#"> <img src="{% static 'images/logo.png'%}" ></a></div>
-                <div class="basketlogo " onclick="basketshow()"><img src="{% static 'images/icons/basket.webp'%}" alt=""></div>
-                <div class="flex-basket hide">
-                    <h2>Tu Carrito</h2>
-                    <!--
-                    <p id="voucher">Apply Voucher code or Gift Card  ></p>
-                    -->
-                    <a>Your basket looks a little empty. Why not check out some of <u id="underline">our unbeatable deals?</u>
-                    <button id="checkout">Checkout</button>
-                </div>
-            </aside>
-            
+        <nav>{%block carrito%}{%endblock%}
             <ul>
                 <div class="itembar"> 
-                    <a class="boxitems" href="#">Pizzas</a>
-                    <a class="boxitems" href="#">Otros</a>
-                    <a class="boxitems" href="#">Carrito</a>
-                    <a class="boxitems" href="#">login</a>
-                </ul>
-            </div>
+                    <a class="boxitems active" href="/">Pizzas</a>
+                    <a class="boxitems active" href="#">Carrito</a>
+                    <a class="boxitems active" href="/login">login</a>
+                </div>
+            </ul>
         </nav>
     </header>
     <main class="container">

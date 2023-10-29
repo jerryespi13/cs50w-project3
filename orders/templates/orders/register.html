@@ -1,0 +1,96 @@
+{% extends 'orders/layout.html'%}
+{% load static %}
+
+{% block title %}Pinochio´s Pizza|Register{% endblock %}
+{% block main %}
+
+<form class="form-register" action="#" method="GET">
+
+    <div class="form-input">
+        <label for="nombre">Nombre:</label>
+        <input 
+            type="text" 
+            name="nombre" 
+            id="nombre" 
+            aria-describedby="input nombre" 
+            placeholder="Ingresa tu nombre"
+            autocomplete="off"
+            autofocus
+        >
+    </div>
+
+    <div class="form-input">
+        <label for="apellido">Apellido:</label>
+        <input 
+            type="text" 
+            name="apellido" 
+            id="apellido" 
+            aria-describedby="input apellido" 
+            placeholder="Ingresa tu apellido"
+            autocomplete="off"
+        >
+    </div>
+
+    <div class="form-input">
+        <label for="usuario">Nombre Usuario:</label>
+        <input 
+            type="text" 
+            name="usuario" 
+            id="usuario" 
+            aria-describedby="input usuario" 
+            placeholder="Ingresa tu usuario"
+            autocomplete="off"
+        >
+    </div>
+
+    <div class="form-input">
+        <label for="contraseña">Contraseña:</label>
+        <input  
+            type="password" 
+            name="contraseña" 
+            id="contraseña" 
+            aria-describedby="input contraseña" 
+            placeholder="Ingresa tu contraseña"
+            autocomplete="off"
+        >
+    </div>
+    
+    <div class="form-input">
+        <label for="confirmarContraseña">Confirmar Contraseña:</label>
+        <input 
+            type="password" 
+            name="confirmarContraseña" 
+            id="confirmarContraseña" 
+            aria-describedby="input contraseña" 
+            placeholder="Confirma tu contraseña"
+            autocomplete="off"
+        >
+    </div>
+
+    <div class="form-input">
+        <label for="direccion">Dirección:</label>
+        <input 
+            type="text" 
+            name="direccion" 
+            id="direccion" 
+            aria-describedby="input direccion" 
+            placeholder="Ingresa tu direccion"
+            autocomplete="off"
+        >
+    </div>
+    <div class="form-input">
+        <label for="telefono">Tel:</label>
+        <input 
+            type="tel" 
+            name="telefono" 
+            id="telefono" 
+            aria-describedby="input telefono" 
+            placeholder="Ingresa tu telefono"
+            autocomplete="off"
+        >
+    </div>
+    <button class="register-button">Enviar</button>
+    <p class="formulario"><a href="/login">Ya estás registrado?</a></p>
+</form>
+
+{% endblock %}
