@@ -1,4 +1,6 @@
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import authenticate
+# para no tener conflicto con la vista logout (por el nombre)
+from django.contrib.auth import logout as logout_auth
 # para no tener conflicto con la vista login (por el nombre)
 from django.contrib.auth import login as login_auth
 from django.http import HttpResponse, HttpResponseRedirect
@@ -87,4 +89,5 @@ def login(request):
         return render(request, "orders/login.html")
     
 def logout(request):
-    return render(request, "orders/login.html", {"message": "Logged out."})
+    logout_auth(request)
+    return render(request, "orders/login.html")
