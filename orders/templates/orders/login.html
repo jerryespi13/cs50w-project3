@@ -4,6 +4,13 @@
 {% block title %}Pinochio´s Pizza|Login{% endblock %}
 {% block main %}
 <form class="form-login" action="/login", method="POST">
+    {% if messages %}
+    <div style="color: red;"
+    {% for message in messages %}
+        {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}
+    {% endfor %}
+    </div>
+    {% endif %}
     {% csrf_token %}
     <div class="form-input">
         <label for="usuario">Nombre Usuario:</label>

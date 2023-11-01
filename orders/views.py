@@ -1,9 +1,12 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, logout
+# para no tener conflicto con la vista login (por el nombre)
+from django.contrib.auth import login as login_auth
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import *
 from django.contrib.auth.models import User
+# para mensajes tipo alert
 from django.contrib import messages
 
 from django.contrib.auth import get_user_model
@@ -43,7 +46,8 @@ def register(request):
         if contraseña == confirmacion:
             print("contraseñas iguales")
             if User.objects.filter(username=usuario).exists():
-                return render(request, 'orders/register.html', {"message": "Usuario Ya existe."})
+                messages.info(request, "Usuario ya existe")
+                return render(request, 'orders/register.html')
             else:
                 user = User.objects.create_user(
                                                 first_name=nombre,
@@ -54,7 +58,8 @@ def register(request):
                                                 location=direccion
                     )
                 user.save()
-                return render(request, 'orders/login.html',{"message": "Usuario Creado, inicia sesión."})
+                messages.info(request, "Usuario creado, inicie sesión")
+                return redirect(to = "login")
 
     else:
         return render(request, "orders/register.html")
@@ -63,7 +68,19 @@ def login(request):
     if request.method == "POST":
         usuario = request.POST["usuario"]
         contraseña = request.POST["contraseña"]
-        print(usuario + contraseña)
+        if usuario == "" or contraseña == "":
+            messages.info(request, "Ingrese los datos solicitados")
+            return render(request, 'orders/login.html')
+        
+        user = authenticate(username = usuario, password = contraseña)
+        if user is not None:
+            login_auth(request, user)
+            return redirect (to = "index")
+        else:
+            messages.success(request, 'Usuario o contraseña incorrecta.')
+            return redirect(to='login')
+
+
         return render(request, "orders/login.html")
 
     else:

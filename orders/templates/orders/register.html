@@ -12,7 +12,7 @@
             {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}
         {% endfor %}
         </div>
-{% endif %}
+    {% endif %}
 
     {% csrf_token %}
     <div class="form-input">
