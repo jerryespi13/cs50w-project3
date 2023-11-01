@@ -59,3 +59,11 @@ class DinnerPlate(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+    
+class Salads(models.Model):
+    name = models.CharField(max_length=64)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    description = models.TextField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name}"
