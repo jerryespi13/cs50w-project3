@@ -55,12 +55,20 @@ class DinnerPlate(models.Model):
     large_price = models.DecimalField(max_digits=5, decimal_places=2)
     size_small = models.ForeignKey(Tamaño, on_delete=models.CASCADE, related_name="dinnersamll")
     size_large = models.ForeignKey(Tamaño, on_delete=models.CASCADE, related_name="dinnerlarge")
-    description = models.TextField(max_length=255, null=True)
+    description = models.TextField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return f"{self.name}"
     
 class Salads(models.Model):
+    name = models.CharField(max_length=64)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    description = models.TextField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name}"
+    
+class Pasta(models.Model):
     name = models.CharField(max_length=64)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField(max_length=255, null=True, blank=True)
