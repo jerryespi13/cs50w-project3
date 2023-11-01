@@ -5,6 +5,15 @@
 {% block main %}
 
 <form class="form-register" action="/register" method="POST">
+
+    {% if messages %}
+        <div style="color: red;"
+        {% for message in messages %}
+            {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}
+        {% endfor %}
+        </div>
+{% endif %}
+
     {% csrf_token %}
     <div class="form-input">
         <label for="nombre">Nombre:</label>

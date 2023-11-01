@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import *
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -26,6 +27,18 @@ def register(request):
         confirmacion = request.POST["confirmarContraseña"]
         direccion = request.POST["direccion"]
         telefono = request.POST["telefono"]
+
+        if usuario == "":
+            messages.info(request, 'Ingresa usuario')
+            return render(request, "orders/register.html")
+
+        elif contraseña == "" or confirmacion == "":
+            messages.info(request, 'Ingresa campo contraseña')
+            return render(request, "orders/register.html")
+        
+        elif contraseña != confirmacion:
+            messages.info(request, 'contraseñas deben de ser iguales')
+            return render(request, "orders/register.html")
 
         if contraseña == confirmacion:
             print("contraseñas iguales")
