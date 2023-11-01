@@ -41,7 +41,21 @@ class Extra(models.Model):
         return f"{self.name}"
 
 class Sub(models.Model):
-    name = name = models.CharField(max_length=64)
+    name  = models.CharField(max_length=64)
     size = models.ForeignKey(Tamaño, on_delete=models.CASCADE, related_name="Sub")
     price = models.DecimalField(max_digits=5, decimal_places=2)
     number_extra = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.name}"
+
+class DinnerPlate(models.Model):
+    name = models.CharField(max_length=64)
+    small_price = models.DecimalField(max_digits=5, decimal_places=2)
+    large_price = models.DecimalField(max_digits=5, decimal_places=2)
+    size_small = models.ForeignKey(Tamaño, on_delete=models.CASCADE, related_name="dinnersamll")
+    size_large = models.ForeignKey(Tamaño, on_delete=models.CASCADE, related_name="dinnerlarge")
+    description = models.TextField(max_length=255, null=True)
+
+    def __str__(self):
+        return f"{self.name}"
