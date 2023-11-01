@@ -10,7 +10,7 @@ class User(AbstractUser):
     location = models.CharField(max_length=60, null=True, blank=True)
     phone = models.CharField(max_length=20, null=True, blank=True)
 
-class TamañoPizza(models.Model):
+class Tamaño(models.Model):
     nombre = models.CharField(max_length=6)
     
     def __str__(self):
@@ -25,7 +25,7 @@ class TipoPizza(models.Model):
 class Pizza(models.Model):
     name = models.CharField(max_length=16)
     description = models.CharField(max_length=64)
-    size = models.ForeignKey(TamañoPizza, on_delete=models.CASCADE, related_name="pizza")
+    size = models.ForeignKey(Tamaño, on_delete=models.CASCADE, related_name="pizza")
     type = models.ForeignKey(TipoPizza, on_delete=models.CASCADE, related_name="pizza")
     price = models.FloatField()
     imagen = models.CharField(max_length=255)
@@ -33,3 +33,15 @@ class Pizza(models.Model):
     def __str__(self):
         return f"{self.name} {self.type} {self.size}"
     
+class Extra(models.Model):
+    name = models.CharField(max_length=64)
+    price = models.DecimalField(max_digits=5, decimal_places=2, default=1.00)
+
+    def __str__(self) -> str:
+        return f"{self.name}"
+
+class Sub(models.Model):
+    name = name = models.CharField(max_length=64)
+    size = models.ForeignKey(Tamaño, on_delete=models.CASCADE, related_name="Sub")
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    number_extra = models.IntegerField()
