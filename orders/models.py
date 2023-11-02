@@ -53,8 +53,7 @@ class DinnerPlate(models.Model):
     name = models.CharField(max_length=64)
     small_price = models.DecimalField(max_digits=5, decimal_places=2)
     large_price = models.DecimalField(max_digits=5, decimal_places=2)
-    size_small = models.ForeignKey(Tamaño, on_delete=models.CASCADE, related_name="dinnersamll")
-    size_large = models.ForeignKey(Tamaño, on_delete=models.CASCADE, related_name="dinnerlarge")
+    sizes = models.ManyToManyField(Tamaño, related_name="dinners")
     description = models.TextField(max_length=255, null=True, blank=True)
 
     def __str__(self):
