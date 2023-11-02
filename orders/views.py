@@ -18,6 +18,9 @@ User = get_user_model()
 # Create your views here.
 def index(request):
     context = {
+        "pastas": Pasta.objects.all(),
+        "salads": Salads.objects.all(),
+        "dinners": DinnerPlate.objects.all(),
         "user": request.user
     }
     return render(request, "orders/index.html", context)
@@ -33,6 +36,7 @@ def register(request):
         direccion = request.POST["direccion"]
         telefono = request.POST["telefono"]
 
+        # validamos ciertos inputs
         if usuario == "":
             messages.info(request, 'Ingresa usuario')
             return render(request, "orders/register.html")
@@ -45,7 +49,7 @@ def register(request):
             messages.info(request, 'contraseñas deben de ser iguales')
             return render(request, "orders/register.html")
 
-        if contraseña == confirmacion:
+        elif contraseña == confirmacion:
             print("contraseñas iguales")
             if User.objects.filter(username=usuario).exists():
                 messages.info(request, "Usuario ya existe")
