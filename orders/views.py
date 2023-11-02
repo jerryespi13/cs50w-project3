@@ -21,6 +21,7 @@ def index(request):
         "pastas": Pasta.objects.all(),
         "salads": Salads.objects.all(),
         "dinners": DinnerPlate.objects.all(),
+        "subs": Sub.objects.all(),
         "user": request.user
     }
     return render(request, "orders/index.html", context)
