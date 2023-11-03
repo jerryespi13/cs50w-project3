@@ -71,11 +71,11 @@ body{
 
                                                                     /* dropsdown menu of pizza menu*/
 
-.dropdown *{
+.dropdown, .dropdown-topping *{
     box-sizing: border-box;
 }
 
-.dropdown{
+.dropdown, .dropdown-topping{
     min-width: 15em;
     position: relative;
     margin: 9px;
@@ -120,7 +120,7 @@ body{
     transform: rotate(180deg);
 }
 
-.menu{
+.menu, .topping{
     list-style: none;
     background: var(--dropbox-color);
     position: absolute;
@@ -134,14 +134,14 @@ body{
     z-index: 1;
 }
 
-.menu li{
+.menu li, .topping li{
     padding: 0px 0px 0px 5px;
     cursor: pointer;
     font-weight: 400;
     font-size: 14px;
 }
 
-.menu li:hover{
+.menu li:hover, .menu li:hover{
     background: rgb(34 164 255);
     color: white;
 }
@@ -170,7 +170,6 @@ span.selected{
     margin-left: 10px;
     width: 100%;
     cursor: pointer;
-
 }
 
 .extra label input{

@@ -56,12 +56,12 @@
                 Select your toppings:
             </p>
             {% for _ in ''|center:pizza.numeroDeToppings %}
-                <div class="dropdown">
+                <div class="dropdown-topping">
                     <div class="select">
-                        <span class="selected"></span>
+                        <span class="selected">{{pizza.topping.first}}</span>
                     <div class="caret"></div>
                 </div>
-                    <ul class="menu">
+                    <ul class="topping">
                         <!--obtenemos los toppings-->
                         {% for topping in pizza.topping.all %}
                             <!-- al primer elemento le agregamos la clase active-->
