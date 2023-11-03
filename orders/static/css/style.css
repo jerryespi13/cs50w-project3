@@ -226,7 +226,7 @@ header {
 
 div.flex-item2{
     display: flex;
-    height: 540px;
+    /*height: 540px;*/
     background-color: white;
     width: 225px;
     justify-content: flex-start;

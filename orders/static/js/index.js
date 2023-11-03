@@ -32,6 +32,24 @@ dropdowns.forEach(dropdown =>{
                 option.classList.remove('active');
             });
             option.classList.add('active');
+
+            //
+            var selectedSize = option.innerText;
+            var smallPrice = dropdown.getAttribute('data-small-price');
+            var largePrice = dropdown.getAttribute('data-large-price');
+
+            // Determinamos el precio basado en el tamaño del producto
+            var price;
+            if (selectedSize === 'Small') {
+                price = smallPrice;
+            } 
+            else if (selectedSize === 'Large') {
+                price = largePrice;
+            }
+
+            // Update the price in the button
+            var priceElement = dropdown.parentNode.querySelector('.sideprice');
+            priceElement.textContent = '$ ' + price;
         });
     });
 });
@@ -41,3 +59,28 @@ let Basket = document.querySelector(".flex-basket");
 function basketshow(){
     Basket.classList.toggle("hide")
 }
+
+// extras
+const extras = document.querySelectorAll('.extra')
+extras.forEach(extra =>{
+    const extraSelect = extra.querySelectorAll('.inputExtra')
+    extraSelect.forEach(extraClick =>{
+        extraClick.addEventListener('click', ()=>{
+            let newPrice
+            var nombreExtra = extraClick.parentElement.innerText.split(" $")[0]
+            var priceExtra = parseFloat(extraClick.parentElement.innerText.split(" $")[1])
+            var priceElement = extraClick.parentNode.parentNode.parentElement.querySelector(".sideprice")
+
+            // si se da check en un extra, se suma el precio de ese extra
+            if (extraClick.checked){
+                newPrice = parseFloat(priceElement.innerHTML.split("$ ")[1]) + priceExtra
+            }
+            // si se descheckea un extra se resta el precio de ese extra
+            else if (!extraClick.checked){
+                newPrice = parseFloat(priceElement.innerHTML.split("$ ")[1]) - priceExtra
+            }
+            // actualizamos el precio
+            priceElement.textContent = '$ ' + newPrice;
+        })
+    })
+})

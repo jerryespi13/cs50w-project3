@@ -21,273 +21,200 @@
 
 <section class="flex-container">
     <h2 class="heading">Pizza</h2>
+    {% for pizza in pizzas %}
+    
     <div class="flex-item2">
-        <img src="{% static 'images/pizzas/pizza1.jpg'%}" alt="Imagen de una pizza">
+        <img src="/media/{{pizza.imagen}}" alt="Imagen de una pizza">
         <p class="mainname2">
-            Regular
+            {{pizza.name}}
         </p>
-        <p class="subdetails2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, nesciunt.
+        <p class="subdetails2" style="height: 110px;">
+            {{pizza.description}}
         </p>
         <p class="selectcrust2">
             Select your size:
         </p>
-        <div class="dropdown">
+        <div class="dropdown" data-small-price="{{pizza.small_price}}" data-large-price="{{pizza.large_price}}">
             <div class="select">
-                <span class="selected">Small</span>
+                <span class="selected">{{pizza.sizes.first}}</span>
                 <div class="caret"></div>
             </div>
             <ul class="menu">
-                <li class="active">Small</li>
-                <li>Large</li>
+                <!--obtenemos los tamaños-->
+                {% for size in pizza.sizes.all %}
+                    <!-- al primer elemento le agregamos la clase active-->
+                    {% if forloop.first%}
+                        <li class="active">{{size}}</li>
+                    {%else%}
+                        <li>{{size}}</li>
+                    {%endif%}
+                {%endfor%}
             </ul>
         </div>
-        <p class="selectcrust2">
-            Toppin:
-        </p>
-        <div class="dropdown">
-            <div class="select">
-                <span class="selected">0</span>
-                <div class="caret"></div>
-            </div>
-            <ul class="menu">
-                <li class="active">0</li>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-            </ul>
-        </div>
+        {%if pizza.numeroDeToppings != 0 %}
+            <p class="selectcrust2">
+                Select your toppings:
+            </p>
+            {% for _ in ''|center:pizza.numeroDeToppings %}
+                <div class="dropdown">
+                    <div class="select">
+                        <span class="selected"></span>
+                    <div class="caret"></div>
+                </div>
+                    <ul class="menu">
+                        <!--obtenemos los toppings-->
+                        {% for topping in pizza.topping.all %}
+                            <!-- al primer elemento le agregamos la clase active-->
+                            {% if forloop.first%}
+                                <li class="active">{{topping}}</li>
+                            {%else%}
+                                <li>{{topping}}</li>
+                            {%endif%}
+                        {%endfor%}
+                    </ul>
+                </div>
+            {%endfor%}
+        {%endif%}
         <p class="price2">
             <button class="customisebtn2">
-                Add <span class="sideprice">&#36 13.95</span>
+                Add <span class="sideprice">&#36 {{pizza.large_price}}</span>
             </button>
         </p>
     </div>
-    <div class="flex-item2">
-        <img src="{% static 'images/pizzas/pizza2.jpg'%}" alt="imagen de una pizza">
-        <p class="mainname2">
-            Siciliana
-        </p>
-        <p class="subdetails2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias, assumenda?
-        </p>
-        <p class="selectcrust2">
-            Select your size:
-        </p>
-        <div class="dropdown">
-            <div class="select">
-                <span class="selected">Small</span>
-                <div class="caret"></div>
-            </div>
-            <ul class="menu">
-                <li class="active">Small</li>
-                <li>Large</li>
-            </ul>
-        </div>
-        <p class="selectcrust2">
-            Toppin:
-        </p>
-        <div class="dropdown">
-            <div class="select">
-                <span class="selected">0</span>
-                <div class="caret"></div>
-            </div>
-            <ul class="menu">
-                <li class="active">0</li>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-            </ul>
-        </div>
-        <p class="price2">
-            <button class="customisebtn2">
-                Add <span class="sideprice">&#36 15.95</span>
-            </button>
-        </p>
-    </div>
-    <div class="flex-item2">
-        <img src="{% static 'images/pizzas/pizza3.jpg'%}" alt="Imagen de una pizza">
-        <p class="mainname2">
-            Especial
-        </p>
-        <p class="subdetails2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, atque.
-        </p>
-        <p class="selectcrust2">
-            Select your size:
-        </p>
-        <div class="dropdown">
-            <div class="select">
-                <span class="selected">Small</span>
-                <div class="caret"></div>
-            </div>
-            <ul class="menu">
-                <li class="active">Small</li>
-                <li>Large</li>
-            </ul>
-        </div>
-        <p class="selectcrust2">
-            Toppin:
-        </p>
-        <div class="dropdown">
-            <div class="select">
-                <span class="selected">0</span>
-                <div class="caret"></div>
-            </div>
-            <ul class="menu">
-                <li class="active">0</li>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-            </ul>
-        </div>
-        <p class="price2">
-            <button class="customisebtn2">
-                Add <span class="sideprice">&#36 17.95</span>
-            </button>
-        </p>
-    </div>
-   
+    {%endfor%}
 </section>
 
- <!-- Sicilian section -->
+ <!-- Subs section -->
 <section class="flex-container">
-    <h2 class="heading">Sicilian Pizza</h2>
+    <h2 class="heading">Subs</h2>
+    {% for sub in subs %}
     <div class="flex-item2">
-        <img src="{% static 'images/pizzas/pizza5.jpg'%}" alt="imagen de una pizza">
+        <img src="{% static 'images/subs/sub.jpg'%}" alt="imagen de una pizza">
         <p class="mainname2">
-            Cheese
+            {{sub.name}}
         </p>
-        <p class="subdetails2">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate, deleniti?
+        <p class="subdetails2"  style="height: 157px;">
+            {{sub.description}}
         </p>
         <p class="selectcrust2">
             Select your size:
         </p>
-        <div class="dropdown">
+        <div class="dropdown" data-small-price="{{sub.small_price}}" data-large-price="{{sub.large_price}}">
             <div class="select">
-                <span class="selected">Small</span>
+                <span class="selected">{{sub.sizes.first}}</span>
                 <div class="caret"></div>
             </div>
             <ul class="menu">
-                <li class="active">Small</li>
-                <li>Large</li>
+                <!--obtenemos los tamaños-->
+                {% for size in sub.sizes.all %}
+                    <!-- al primer elemento le agregamos la clase active-->
+                    {% if forloop.first%}
+                        <li class="active">{{size}}</li>
+                    {%else%}
+                        <li>{{size}}</li>
+                    {%endif%}
+                {%endfor%}
             </ul>
         </div>
+        <p class="selectcrust2">
+            Select your extra:
+        </p>
+        
+            <div class="extra">
+                <!--obtenemos los extras disponibles para cada sub-->
+                {% for extra in sub.extras.all %}
+                    <label data-{{extra.name}}-price="{{extra.price}}" for="{{sub.name}}{{extra}}"><input class="inputExtra" type="checkbox" name="{{extra}}" id="{{sub.name}}{{extra}}">{{extra.name}} &#36 {{extra.price}}</label>
+                {%endfor%}
+            </div>
+        
         <p class="price2">
             <button class="customisebtn2">
-                Add <span class="sideprice">&#36 25.75</span>
+                Add <span class="sideprice">&#36 {{sub.large_price}}</span>
             </button>
         </p>
     </div>
+    {%endfor%}
+</section>
+
+ <!-- Pasta section -->
+ <section class="flex-container">
+    <h2 class="heading">Pasta</h2>
+    {% for pasta in pastas %}
     <div class="flex-item2">
-        <img src="{% static 'images/pizzas/pizza5.jpg'%}" alt="imagen de una pizza">
+        <img src="{% static 'images/subs/sub.jpg'%}" alt="imagen de una Pasta">
         <p class="mainname2">
-            1 Item
+            {{pasta.name}}
         </p>
-        <p class="subdetails2">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate, deleniti?
+        <p class="subdetails2"  style="height: 90px;">
+            {{pasta.description}}
+        </p>
+        <p class="price2">
+            <button class="customisebtn2">
+                Add <span class="sideprice">&#36 {{pasta.price}}</span>
+            </button>
+        </p>
+    </div>
+    {%endfor%}
+</section>
+<!-- Salads section -->
+<section class="flex-container">
+    <h2 class="heading">Salads</h2>
+    {% for salad in salads %}
+    <div class="flex-item2">
+        <img src="{% static 'images/subs/sub.jpg'%}" alt="imagen de una ensalada">
+        <p class="mainname2">
+            {{salad.name}}
+        </p>
+        <p class="subdetails2"  style="height: 157px;">
+            {{salad.description}}
+        </p>
+        <p class="price2">
+            <button class="customisebtn2">
+                Add <span class="sideprice">&#36 {{salad.price}}</span>
+            </button>
+        </p>
+    </div>
+    {%endfor%}
+</section>
+<!-- Dinner Plates section -->
+<section class="flex-container">
+    <h2 class="heading">Dinner Plates</h2>
+    {% for dinner in dinners %}
+    <div class="flex-item2">
+        <img src="{% static 'images/subs/sub.jpg'%}" alt="imagen de una ensalada">
+        <p class="mainname2">
+            {{dinner.name}}
+        </p>
+        <p class="subdetails2"  style="height: 157px;">
+            {{dinner.description}}
         </p>
         <p class="selectcrust2">
             Select your size:
         </p>
-        <div class="dropdown">
+        <div class="dropdown" data-small-price="{{dinner.small_price}}" data-large-price="{{dinner.large_price}}">
             <div class="select">
-                <span class="selected">Small</span>
+                <span class="selected">{{dinner.sizes.first}}</span>
                 <div class="caret"></div>
             </div>
             <ul class="menu">
-                <li class="active">Small</li>
-                <li>Large</li>
+                <!--obtenemos los tamaños-->
+                {% for size in dinner.sizes.all %}
+                    <!-- al primer elemento le agregamos la clase active-->
+                    {% if forloop.first%}
+                        <li class="active">{{size}}</li>
+                    {%else%}
+                        <li>{{size}}</li>
+                    {%endif%}
+                {%endfor%}
             </ul>
         </div>
         <p class="price2">
             <button class="customisebtn2">
-                Add <span class="sideprice">&#36 28.75</span>
+                Add <span class="sideprice">&#36 {{dinner.large_price}}</span>
             </button>
         </p>
     </div>
-    <div class="flex-item2">
-        <img src="{% static 'images/pizzas/pizza5.jpg'%}" alt="imagen de una pizza">
-        <p class="mainname2">
-            2 Items
-        </p>
-        <p class="subdetails2">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate, deleniti?
-        </p>
-        <p class="selectcrust2">
-            Select your size:
-        </p>
-        <div class="dropdown">
-            <div class="select">
-                <span class="selected">Small</span>
-                <div class="caret"></div>
-            </div>
-            <ul class="menu">
-                <li class="active">Small</li>
-                <li>Large</li>
-            </ul>
-        </div>
-        <p class="price2">
-            <button class="customisebtn2">
-                Add <span class="sideprice">&#36 31.75</span>
-            </button>
-        </p>
-    </div>
-    <div class="flex-item2">
-        <img src="{% static 'images/pizzas/pizza5.jpg'%}" alt="imagen de una pizza">
-        <p class="mainname2">
-            3 Items
-        </p>
-        <p class="subdetails2">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate, deleniti?
-        </p>
-        <p class="selectcrust2">
-            Select your size:
-        </p>
-        <div class="dropdown">
-            <div class="select">
-                <span class="selected">Small</span>
-                <div class="caret"></div>
-            </div>
-            <ul class="menu">
-                <li class="active">Small</li>
-                <li>Large</li>
-            </ul>
-        </div>
-        <p class="price2">
-            <button class="customisebtn2">
-                Add <span class="sideprice">&#36 34.75</span>
-            </button>
-        </p>
-    </div>
-    <div class="flex-item2">
-        <img src="{% static 'images/pizzas/pizza5.jpg'%}" alt="imagen de una pizza">
-        <p class="mainname2">
-            Special
-        </p>
-        <p class="subdetails2">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate, deleniti?
-        </p>
-        <p class="selectcrust2">
-            Select your size:
-        </p>
-        <div class="dropdown">
-            <div class="select">
-                <span class="selected">Small</span>
-                <div class="caret"></div>
-            </div>
-            <ul class="menu">
-                <li class="active">Small</li>
-                <li>Large</li>
-            </ul>
-        </div>
-        <p class="price2">
-            <button class="customisebtn2">
-                Add <span class="sideprice">&#36 37.75</span>
-            </button>
-        </p>
-    </div>
+    {%endfor%}
 </section>
 
 {% endblock %}

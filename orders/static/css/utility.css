@@ -160,6 +160,23 @@ span.selected{
     white-space: nowrap;
 }
 
+.extra{
+    width: 100%;
+    padding: 5px;
+}
+
+.extra label{
+    display: block;
+    margin-left: 10px;
+    width: 100%;
+    cursor: pointer;
+
+}
+
+.extra label input{
+    margin-right: 5px;
+}
+
 /* "sides menu" hover button */
 
 .flex-item3:hover {

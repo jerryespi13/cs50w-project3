@@ -6,7 +6,7 @@ from.models import User
 #admin.site.register(model.Tamaño)
 admin.site.register(User)
 admin.site.register(model.Pizza)
-admin.site.register(model.TipoPizza)
+admin.site.register(model.Topping)
 admin.site.register(model.Sub)
 admin.site.register(model.Extra)
 admin.site.register(model.DinnerPlate)
