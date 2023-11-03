@@ -17,23 +17,25 @@ class Tamaño(models.Model):
     def __str__(self):
         return f"{self.nombre}"
 
-# tabla tipos de pizza
-class TipoPizza(models.Model):
-    nombre = models.CharField(max_length=12)
+# tabla toppings
+class Topping(models.Model):
+    nombre = models.CharField(max_length=64)
 
     def __str__(self):
         return f"{self.nombre}"
 
 class Pizza(models.Model):
-    name = models.CharField(max_length=16)
-    description = models.CharField(max_length=64)
-    size = models.ForeignKey(Tamaño, on_delete=models.CASCADE, related_name="pizza")
-    type = models.ForeignKey(TipoPizza, on_delete=models.CASCADE, related_name="pizza")
-    price = models.FloatField()
-    imagen = models.CharField(max_length=255)
+    name = models.CharField(max_length=64)
+    sizes = models.ManyToManyField(Tamaño, related_name="pizza")    
+    large_price = models.DecimalField(max_digits=5, decimal_places=2)
+    small_price = models.DecimalField(max_digits=5, decimal_places=2)
+    numeroDeToppings = models.IntegerField(max_length=1, default=0)
+    topping = models.ManyToManyField(Topping, related_name="pizza", blank=True, null=True)
+    imagen = models.ImageField(default='pizza.jpg', upload_to='productos/')
+    description = models.TextField(max_length=255)
 
     def __str__(self):
-        return f"{self.name} {self.type} {self.size}"
+        return f"{self.name}"
     
 
 # tabla extras
@@ -51,7 +53,7 @@ class Sub(models.Model):
     small_price = models.DecimalField(max_digits=5, decimal_places=2)
     large_price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField(max_length=255, null=True, blank=True)
-    extras = models.ManyToManyField(Extra, blank=True)
+    extras = models.ManyToManyField(Extra, blank=True, related_name="sub")
 
     def __str__(self):
         return f"{self.name}"
