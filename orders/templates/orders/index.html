@@ -35,7 +35,7 @@
         <p class="selectcrust2">
             Select your size:
         </p>
-        <div class="dropdown" data-small-price="{{pizza.small_price}}" data-large-price="{{pizza.large_price}}">
+        <div class="dropdown">
             <div class="select">
                 <span class="selected">{{pizza.sizes.first}}</span>
                 <div class="caret"></div>
@@ -101,7 +101,7 @@
         <p class="selectcrust2">
             Select your size:
         </p>
-        <div class="dropdown" data-small-price="{{sub.small_price}}" data-large-price="{{sub.large_price}}">
+        <div class="dropdown">
             <div class="select">
                 <span class="selected">{{sub.sizes.first}}</span>
                 <div class="caret"></div>
@@ -125,7 +125,7 @@
             <div class="extra">
                 <!--obtenemos los extras disponibles para cada sub-->
                 {% for extra in sub.extras.all %}
-                    <label data-{{extra.name}}-price="{{extra.price}}" for="{{sub.name}}{{extra}}"><input class="inputExtra" type="checkbox" name="{{extra}}" id="{{sub.name}}{{extra}}">{{extra.name}} &#36 {{extra.price}}</label>
+                    <label for="{{sub.name}}{{extra}}"><input class="inputExtra" type="checkbox" name="{{extra}}" id="{{sub.name}}{{extra}}">{{extra.name}} &#36 {{extra.price}}</label>
                 {%endfor%}
             </div>
         
@@ -196,7 +196,7 @@
         <p class="selectcrust2">
             Select your size:
         </p>
-        <div class="dropdown" data-small-price="{{dinner.small_price}}" data-large-price="{{dinner.large_price}}">
+        <div class="dropdown">
             <div class="select">
                 <span class="selected">{{dinner.sizes.first}}</span>
                 <div class="caret"></div>

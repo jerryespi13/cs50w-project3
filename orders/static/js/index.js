@@ -16,14 +16,6 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 
-// nav bar active page
-const activepage = window.location.pathname;
-const navlinks = document.querySelectorAll('nav ul div a').
-forEach(link =>{
-    if(link.href.includes(`${activepage}`)){
-        link.classList.add(`active`);
-    }
-});
 
 // dropdown menu 
 const dropdowns = document.querySelectorAll('.dropdown');
@@ -50,23 +42,19 @@ dropdowns.forEach(dropdown =>{
             });
             option.classList.add('active');
 
-            //
-            var selectedSize = option.innerText;
-            var smallPrice = dropdown.getAttribute('data-small-price');
-            var largePrice = dropdown.getAttribute('data-large-price');
+            const nodoPadre = dropdown.parentNode
+            const nombreProducto = nodoPadre.querySelector(".mainname2").innerText
+            const idElement = parseInt(nodoPadre.querySelector(".id_producto").innerText)
+            const selectedSize = option.innerText;
+            const priceElement = nodoPadre.querySelector('.sideprice');
 
-            // Determinamos el precio basado en el tamaño del producto
-            var price;
-            if (selectedSize === 'Small') {
-                price = smallPrice;
-            } 
-            else if (selectedSize === 'Large') {
-                price = largePrice;
+            datos = {
+                "idElement": idElement,
+                "sizeElement": selectedSize,
+                "nombreElement": nombreProducto
             }
-
-            // Update the price in the button
-            var priceElement = dropdown.parentNode.querySelector('.sideprice');
-            priceElement.textContent = '$ ' + price;
+            // actulizamos el precio en el boton
+            actualizarPrecio(datos,priceElement)
         });
     });
 });
@@ -85,6 +73,7 @@ extras.forEach(extra =>{
     extraSelect.forEach(extraClick =>{
         extraClick.addEventListener('click', ()=>{
             let padreNode = extraClick.parentElement.parentElement.parentElement
+            const nombreProducto = padreNode.querySelector(".mainname2").innerText
             let sizeElement = padreNode.querySelector(".selected").innerHTML
             let nombreExtra = extraClick.parentElement.innerText.split(" $")[0]
             var priceElement = padreNode.querySelector(".sideprice")
@@ -100,6 +89,7 @@ extras.forEach(extra =>{
             // actualizamos el precio
             datos = {
                 "idElement": idElement,
+                "nombreElement": nombreProducto,
                 "nombreExtra": nombreExtra,
                 "sizeElement": sizeElement,
                 "numerosExtras": numerosExtras
@@ -139,8 +129,8 @@ dropdownsToppings.forEach(dropdownTopping =>{
 });
 
 //funcion para actualizar precio
-function actualizarPrecio(datos, priceElement){
-    fetch(`${window.origin}/extras`, {
+function actualizarPrecio( datos, priceElement){
+    fetch(`${window.origin}/change_Price`, {
         method: 'POST',
         headers: {
             'Content-Type': 'orders/json',

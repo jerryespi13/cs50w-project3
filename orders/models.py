@@ -34,6 +34,9 @@ class Pizza(models.Model):
     imagen = models.ImageField(default='pizza.jpg', upload_to='productos/')
     description = models.TextField(max_length=255)
 
+    class Meta:
+        db_table = 'Pizza'
+
     def __str__(self):
         return f"{self.name}"
     
@@ -55,6 +58,9 @@ class Sub(models.Model):
     description = models.TextField(max_length=255, null=True, blank=True)
     extras = models.ManyToManyField(Extra, blank=True, related_name="sub")
 
+    class Meta:
+        db_table = 'Sub'
+
     def __str__(self):
         return f"{self.name}"
 
@@ -66,6 +72,9 @@ class DinnerPlate(models.Model):
     sizes = models.ManyToManyField(Tamaño, related_name="dinners")
     description = models.TextField(max_length=255, null=True, blank=True)
 
+    class Meta:
+        db_table = 'DinnerPlate'
+
     def __str__(self):
         return f"{self.name}"
 
@@ -75,6 +84,9 @@ class Salads(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField(max_length=255, null=True, blank=True)
 
+    class Meta:
+        db_table = 'Salads'
+
     def __str__(self):
         return f"{self.name}"
     
@@ -83,6 +95,9 @@ class Pasta(models.Model):
     name = models.CharField(max_length=64)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField(max_length=255, null=True, blank=True)
+
+    class Meta:
+        db_table = 'Pasta'
 
     def __str__(self):
         return f"{self.name}"

@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.contrib.auth import authenticate
 # para no tener conflicto con la vista logout (por el nombre)
 from django.contrib.auth import logout as logout_auth
@@ -6,10 +7,9 @@ from django.contrib.auth import login as login_auth
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import json
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from .models import *
 from django.contrib.auth.models import User
-# para mensajes tipo alert
+# para mensajes 
 from django.contrib import messages
 
 from django.contrib.auth import get_user_model
@@ -89,9 +89,6 @@ def login(request):
             messages.success(request, 'Usuario o contraseña incorrecta.')
             return redirect(to='login')
 
-
-        return render(request, "orders/login.html")
-
     else:
         return render(request, "orders/login.html")
     
@@ -99,35 +96,80 @@ def logout(request):
     logout_auth(request)
     return render(request, "orders/login.html")
 
-def extras(request):
+# cambiar precio en pantalla
+def change_Price(request):
     if request.method == 'POST':
         # obtenemos los datos
         datos = json.loads(request.body)
 
-        # algunas variables para hacer calculos
-        producto = Sub.objects.get(pk=datos["idElement"])
-
         # obtenemos el precio del producto
-        precioProducto = 0
-        sizeProducto = datos["sizeElement"]
-        if sizeProducto == "Small":
-            precioProducto = producto.small_price
-        elif sizeProducto == "Large":
-            precioProducto = producto.large_price
-        
-        # obtenemos el numero de extras seleccionados
-        numerosExtras = datos["numerosExtras"]
-        
-        # obtenemos el precio total de los extra
-        precioExtra = 0
-        nombreExtra = datos["nombreExtra"]
-        for _ in range(numerosExtras):
-            for extra in producto.extras.all():
-                if nombreExtra == extra.name:
-                    precioExtra += extra.price
-        nuevoPrecioProducto = precioProducto + precioExtra
+        precioProducto = actualizar_precio(datos)
 
-        # retornamos el calculo obtenido
-        return JsonResponse(nuevoPrecioProducto, safe=False)
+        return JsonResponse(precioProducto, safe=False)
     else:
         return JsonResponse({"mensaje": "Método no permitido"}, status=405)
+    
+
+def actualizar_precio(datos):
+        app_name = 'orders'
+        # Obtienemos los modelos de la aplicación
+        app_models = apps.get_app_config(app_name).get_models()
+        # Extraemos los nombres de las tablas de la base de datos de los modelos
+        # A las tablas donde guardo los productos les puse el mismo nombre de la class
+        table_names = [model._meta.db_table for model in app_models]
+
+        nombreModelo = ""
+        priceElementSelect = 0
+        precioExtra = 0
+        nuevoPrecioProducto = 0
+        for table_name in table_names:
+            if not table_name.__contains__("orders_"):
+                nombreModelo = table_name
+                Modelo = apps.get_model(app_name, nombreModelo)
+
+                # buscamos el elemento en cada tabla
+                try:
+                    # obtenemos la instancia del producto al que se le dio click
+                    producto = Modelo.objects.get(id=datos["idElement"], name=datos["nombreElement"])
+
+                    # si el tamaño seleccionado es Small
+                    if datos["sizeElement"] == "Small":
+                        priceElementSelect = producto.small_price
+
+                        # si viene uno o mas extras seleccionados
+                        if datos["nombreExtra"]:
+                            # sumamos el precio de cada extra
+                            for _ in range(datos["numerosExtras"]):
+                                for extra in producto.extras.all():
+                                    if datos["nombreExtra"] == extra.name:
+                                        precioExtra += extra.price
+                            # y al precio del elemento se le suma el precio de los extras totales
+                            nuevoPrecioProducto = priceElementSelect + precioExtra
+
+                            # retornamos el precio del elemento mas el total de los extras
+                            return nuevoPrecioProducto
+
+                     # si el tamaño seleccionado es Large
+                    elif datos["sizeElement"] == "Large":
+                        priceElementSelect = producto.large_price
+
+                         # si viene uno o mas extras seleccionados
+                        if datos["nombreExtra"]:
+                            # sumamos el precio de cada extra
+                            for _ in range(datos["numerosExtras"]):
+                                for extra in producto.extras.all():
+                                    if datos["nombreExtra"] == extra.name:
+                                        precioExtra += extra.price
+                            # y al precio del elemento se le suma el precio de los extras totales
+                            nuevoPrecioProducto = priceElementSelect + precioExtra
+
+                            # retornamos el precio del producto mas el precio de los extras
+                            return nuevoPrecioProducto
+
+                except:
+                    nombreModelo = ""
+                    continue
+        
+        # si no hay extra selecionado sea por que no se seleciono o no tiene
+        # se devuelve el precio tipo de tamaño de ese producto
+        return priceElementSelect
