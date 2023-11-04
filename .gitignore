@@ -4,8 +4,8 @@
 *.pyc
 __pycache__
 db.sqlite3
-media
-
+#media
+users/
 # Backup files # 
 *.bak 
 
@@ -137,6 +137,5 @@ GitHub.sublime-settings
 .history
 
 # cosas que quiero ignorar de momento
-icons/
 paginaPizzas.html
 migrations/
