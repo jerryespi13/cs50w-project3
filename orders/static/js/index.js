@@ -1,3 +1,21 @@
+// obtenemos csrftoken para poder trabajar con fetch
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // ¿Esta cadena de cookie comienza con el nombre que queremos?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
 // nav bar active page
 const activepage = window.location.pathname;
 const navlinks = document.querySelectorAll('nav ul div a').
@@ -63,23 +81,31 @@ function basketshow(){
 const extras = document.querySelectorAll('.extra')
 extras.forEach(extra =>{
     const extraSelect = extra.querySelectorAll('.inputExtra')
+    let numerosExtras = 0;
     extraSelect.forEach(extraClick =>{
         extraClick.addEventListener('click', ()=>{
-            let newPrice
-            var nombreExtra = extraClick.parentElement.innerText.split(" $")[0]
-            var priceExtra = parseFloat(extraClick.parentElement.innerText.split(" $")[1])
-            var priceElement = extraClick.parentNode.parentNode.parentElement.querySelector(".sideprice")
-
+            let padreNode = extraClick.parentElement.parentElement.parentElement
+            let sizeElement = padreNode.querySelector(".selected").innerHTML
+            let nombreExtra = extraClick.parentElement.innerText.split(" $")[0]
+            var priceElement = padreNode.querySelector(".sideprice")
+            let idElement = parseInt(padreNode.querySelector(".id_producto").innerHTML)
             // si se da check en un extra, se suma el precio de ese extra
             if (extraClick.checked){
-                newPrice = parseFloat(priceElement.innerHTML.split("$ ")[1]) + priceExtra
+                numerosExtras +=1
             }
             // si se descheckea un extra se resta el precio de ese extra
             else if (!extraClick.checked){
-                newPrice = parseFloat(priceElement.innerHTML.split("$ ")[1]) - priceExtra
+                numerosExtras -= 1
             }
             // actualizamos el precio
-            priceElement.textContent = '$ ' + newPrice;
+            datos = {
+                "idElement": idElement,
+                "nombreExtra": nombreExtra,
+                "sizeElement": sizeElement,
+                "numerosExtras": numerosExtras
+            }
+            // Actualizamos el precio
+            actualizarPrecio(datos, priceElement)
         })
     })
 })
@@ -111,3 +137,18 @@ dropdownsToppings.forEach(dropdownTopping =>{
         });
     });
 });
+
+//funcion para actualizar precio
+function actualizarPrecio(datos, priceElement){
+    fetch(`${window.origin}/extras`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'orders/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify(datos)
+    })
+    .then(response => response.json())
+    .then(data => priceElement.textContent = '$ ' + data
+    );
+}

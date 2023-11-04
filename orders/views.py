@@ -3,7 +3,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import logout as logout_auth
 # para no tener conflicto con la vista login (por el nombre)
 from django.contrib.auth import login as login_auth
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+import json
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import *
@@ -97,3 +98,36 @@ def login(request):
 def logout(request):
     logout_auth(request)
     return render(request, "orders/login.html")
+
+def extras(request):
+    if request.method == 'POST':
+        # obtenemos los datos
+        datos = json.loads(request.body)
+
+        # algunas variables para hacer calculos
+        producto = Sub.objects.get(pk=datos["idElement"])
+
+        # obtenemos el precio del producto
+        precioProducto = 0
+        sizeProducto = datos["sizeElement"]
+        if sizeProducto == "Small":
+            precioProducto = producto.small_price
+        elif sizeProducto == "Large":
+            precioProducto = producto.large_price
+        
+        # obtenemos el numero de extras seleccionados
+        numerosExtras = datos["numerosExtras"]
+        
+        # obtenemos el precio total de los extra
+        precioExtra = 0
+        nombreExtra = datos["nombreExtra"]
+        for _ in range(numerosExtras):
+            for extra in producto.extras.all():
+                if nombreExtra == extra.name:
+                    precioExtra += extra.price
+        nuevoPrecioProducto = precioProducto + precioExtra
+
+        # retornamos el calculo obtenido
+        return JsonResponse(nuevoPrecioProducto, safe=False)
+    else:
+        return JsonResponse({"mensaje": "Método no permitido"}, status=405)
