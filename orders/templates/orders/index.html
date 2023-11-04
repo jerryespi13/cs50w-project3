@@ -91,7 +91,7 @@
     {% for sub in subs %}
     <div class="flex-item2">
         <p class="id_producto" style="display:none;">{{sub.id}}</p>
-        <img src="{% static 'images/subs/sub.jpg'%}" alt="imagen de una pizza">
+        <img src="/media/{{sub.imagen}}" alt="imagen de una pizza">
         <p class="mainname2">
             {{sub.name}}
         </p>
@@ -144,7 +144,7 @@
     {% for pasta in pastas %}
     <div class="flex-item2">
         <p class="id_producto" style="display: none;">{{pasta.id}}</p>
-        <img src="{% static 'images/subs/sub.jpg'%}" alt="imagen de una Pasta">
+        <img src="/media/{{pasta.imagen}}" alt="imagen de una Pasta">
         <p class="mainname2">
             {{pasta.name}}
         </p>
@@ -165,7 +165,7 @@
     {% for salad in salads %}
     <div class="flex-item2">
         <p class="id_producto" style="display: none;">{{salad.id}}</p>
-        <img src="{% static 'images/subs/sub.jpg'%}" alt="imagen de una ensalada">
+        <img src="/media/{{salad.imagen}}" alt="imagen de una ensalada">
         <p class="mainname2">
             {{salad.name}}
         </p>
@@ -186,7 +186,7 @@
     {% for dinner in dinners %}
     <div class="flex-item2">
         <p class="id_producto" style="display: none;">{{dinner.id}}</p>
-        <img src="{% static 'images/subs/sub.jpg'%}" alt="imagen de una ensalada">
+        <img src="/media/{{dinner.imagen}}" alt="imagen de una ensalada">
         <p class="mainname2">
             {{dinner.name}}
         </p>

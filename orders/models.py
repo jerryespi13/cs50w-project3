@@ -57,6 +57,7 @@ class Sub(models.Model):
     large_price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField(max_length=255, null=True, blank=True)
     extras = models.ManyToManyField(Extra, blank=True, related_name="sub")
+    imagen = models.ImageField(default='sub.png', upload_to='productos/')
 
     class Meta:
         db_table = 'Sub'
@@ -71,6 +72,7 @@ class DinnerPlate(models.Model):
     large_price = models.DecimalField(max_digits=5, decimal_places=2)
     sizes = models.ManyToManyField(Tamaño, related_name="dinners")
     description = models.TextField(max_length=255, null=True, blank=True)
+    imagen = models.ImageField(default='dinner.jpg', upload_to='productos/')
 
     class Meta:
         db_table = 'DinnerPlate'
@@ -83,6 +85,7 @@ class Salads(models.Model):
     name = models.CharField(max_length=64)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField(max_length=255, null=True, blank=True)
+    imagen = models.ImageField(default='salads.avif', upload_to='productos/')
 
     class Meta:
         db_table = 'Salads'
@@ -95,6 +98,7 @@ class Pasta(models.Model):
     name = models.CharField(max_length=64)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField(max_length=255, null=True, blank=True)
+    imagen = models.ImageField(default='pasta.jpg', upload_to='productos/')
 
     class Meta:
         db_table = 'Pasta'
