@@ -1,3 +1,4 @@
+let numerosExtras = 0;
 // obtenemos csrftoken para poder trabajar con fetch
 function getCookie(name) {
     let cookieValue = null;
@@ -48,6 +49,13 @@ dropdowns.forEach(dropdown =>{
             const selectedSize = option.innerText;
             const priceElement = nodoPadre.querySelector('.sideprice');
 
+            const label = nodoPadre.querySelector(".extra");
+            const extras = label.querySelectorAll(".inputExtra")
+            extras.forEach(extra =>{
+                extra.checked = false
+            })
+            numerosExtras = 0
+
             datos = {
                 "idElement": idElement,
                 "sizeElement": selectedSize,
@@ -69,7 +77,7 @@ function basketshow(){
 const extras = document.querySelectorAll('.extra')
 extras.forEach(extra =>{
     const extraSelect = extra.querySelectorAll('.inputExtra')
-    let numerosExtras = 0;
+    
     extraSelect.forEach(extraClick =>{
         extraClick.addEventListener('click', ()=>{
             let padreNode = extraClick.parentElement.parentElement.parentElement
