@@ -50,11 +50,13 @@ dropdowns.forEach(dropdown =>{
             const priceElement = nodoPadre.querySelector('.sideprice');
 
             const label = nodoPadre.querySelector(".extra");
-            const extras = label.querySelectorAll(".inputExtra")
-            extras.forEach(extra =>{
-                extra.checked = false
-            })
-            numerosExtras = 0
+            if(label){
+                const extras = label.querySelectorAll(".inputExtra")
+                extras.forEach(extra =>{
+                    extra.checked = false
+                })
+                numerosExtras = 0
+            }
 
             datos = {
                 "idElement": idElement,
