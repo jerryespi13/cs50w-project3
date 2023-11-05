@@ -1,4 +1,14 @@
 let numerosExtras = 0;
+
+let currency = "$ "
+
+let cart = []
+
+const cartContainer = document.querySelector(".productosCarrito")
+const totalCart = document.querySelector(".totalCarrito")
+
+
+
 // obtenemos csrftoken para poder trabajar con fetch
 function getCookie(name) {
     let cookieValue = null;
@@ -83,7 +93,7 @@ extras.forEach(extra =>{
     extraSelect.forEach(extraClick =>{
         extraClick.addEventListener('click', ()=>{
             let padreNode = extraClick.parentElement.parentElement.parentElement
-            const nombreProducto = padreNode.querySelector(".mainname2").innerText
+            let nombreProducto = padreNode.querySelector(".mainname2").innerText
             let sizeElement = padreNode.querySelector(".selected").innerHTML
             let nombreExtra = extraClick.parentElement.innerText.split(" $")[0]
             var priceElement = padreNode.querySelector(".sideprice")
@@ -105,7 +115,7 @@ extras.forEach(extra =>{
                 "numerosExtras": numerosExtras
             }
             // Actualizamos el precio
-            actualizarPrecio(datos, priceElement)
+            actualizarPrecio(datos, priceElement) 
         })
     })
 })
@@ -149,6 +159,142 @@ function actualizarPrecio( datos, priceElement){
         body: JSON.stringify(datos)
     })
     .then(response => response.json())
-    .then(data => priceElement.textContent = '$ ' + data
+    .then(data => priceElement.textContent = currency + data
     );
+}
+
+// add to cart
+//Seleccionamos todos los botones con la class 'customisebtn2'
+var buttons = document.querySelectorAll('.customisebtn2');
+
+// ciclo para cada button
+for (var i = 0; i < buttons.length; i++) {
+    // agragemos un evento de escucha en cada boton
+    buttons[i].addEventListener('click', function() {
+        // 'this' se refiere al boton que se le dio click
+        // 'closest' Busca el antecesor mas cercano que coincida con el selectot 'flex-item2'
+        var container = this.closest('.flex-item2');
+
+        // obtenemos la informacion necesaria del producto a añadir al carrito
+        let datosCart = {}
+        let extrasSelected = []
+        let toppingsSelected = []
+        let extrasStr = ""
+        let toppingsStr = ""
+        let idElement = container.querySelector(".id_producto").innerHTML;
+        let nombreProducto = container.querySelector('.mainname2').innerText;
+
+        // obtenemos los toppings seleccionados si tiene
+        let nombresToppings = container.querySelectorAll(".topping")
+        nombresToppings.forEach(nombreTopping=>{
+            toppingsSelected.push(nombreTopping.querySelector(".active").innerText)
+            toppingsStr += `<li>- ${nombreTopping.querySelector(".active").innerText}</li>`;
+        })
+
+        // obtenemos los extras seleccionados si tiene
+        let sizeElement = container.querySelector(".selected") ? container.querySelector(".selected").innerText : ""
+        let nombresExtras = container.querySelectorAll(".inputExtra");
+        nombresExtras.forEach(nombreExtra=>{
+            if (nombreExtra.checked){
+                let extra = nombreExtra.parentElement.innerText.split(" $")[0]
+                extrasSelected.push(extra)
+                extrasStr += `<li>- ${extra}</li>`;
+            }
+        })
+        datosCart = {
+            "idElement": idElement,
+            "nombreElement": nombreProducto,
+            "sizeElement": sizeElement
+        }
+
+        if (extrasSelected.length !== 0){
+            datosCart['extrasSelected'] = extrasSelected
+            datosCart["extrasStr"] = extrasStr
+        }
+
+        if (toppingsSelected.length !== 0){
+            datosCart['toppingsSelected'] = toppingsSelected
+            datosCart["toppingsStr"] = toppingsStr
+        }
+        
+        // validamos los datos
+        fetch(`${window.origin}/cart`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'orders/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(datosCart)
+        })
+        .then(response => response.json())
+        .then(data => {
+            datosCart["precio"] = data
+            cart.push(datosCart)
+            printCart()
+            }
+        );
+    });
+}
+
+function printCart(){
+    let totalPrice = 0
+    cartContainer.innerHTML = ""
+    cart.forEach(product=>{
+        totalPrice = totalPrice + parseFloat(product["precio"])
+        if (product["extrasSelected"]){
+            cartContainer.innerHTML += `
+                            <div class="productoCarrito">
+                                <div class="cantidadProductoCarrito">1</div>
+                                <div class="descriptionProductoCarrito">
+                                    <div class="nombreProductoCarrito">${product["nombreElement"]}</div>
+                                    <ul class="extrasProductosCarritos">
+                                        <p>Extras:</p>
+                                        ${product["extrasStr"]}
+                                    </ul>
+                                </div>
+                                <div class="tamañoProductoCarrito">${product["sizeElement"]}</div>
+                                <div class="precioProductoCarrito">$ ${product["precio"]}</div>
+                                <button class="eliminarProductoCarrito">X</button>
+                            </div>`
+        }
+        else if(product["toppingsSelected"]){
+            cartContainer.innerHTML += `
+                            <div class="productoCarrito">
+                                <div class="cantidadProductoCarrito">1</div>
+                                <div class="descriptionProductoCarrito">
+                                    <div class="nombreProductoCarrito">${product["nombreElement"]}</div>
+                                    <ul class="extrasProductosCarritos">
+                                        <p>Toppings:</p>
+                                        ${product["toppingsStr"]}
+                                    </ul>
+                                </div>
+                                <div class="tamañoProductoCarrito">${product["sizeElement"]}</div>
+                                <div class="precioProductoCarrito">$ ${product["precio"]}</div>
+                                <button class="eliminarProductoCarrito">X</button>
+                            </div>`
+        }
+        else{
+            cartContainer.innerHTML += `
+                            <div class="productoCarrito">
+                                <div class="cantidadProductoCarrito">1</div>
+                                <div class="descriptionProductoCarrito">
+                                    <div class="nombreProductoCarrito">${product["nombreElement"]}</div>
+                                    <ul class="extrasProductosCarritos">
+                                   
+                                    </ul>
+                                </div>
+                                <div class="tamañoProductoCarrito">${product["sizeElement"]}</div>
+                                <div class="precioProductoCarrito">$ ${product["precio"]}</div>
+                                <button class="eliminarProductoCarrito">X</button>
+                            </div>`
+        }
+        cartContainer.lastChild.scrollIntoView(false)
+        totalCart.lastElementChild.innerHTML = currency + totalPrice.toFixed(2)
+    })
+}
+
+function clearCart() {
+    cart = [];
+    printCart();
+    totalCart.lastElementChild.innerHTML = ""
 }

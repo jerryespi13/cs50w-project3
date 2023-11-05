@@ -173,3 +173,80 @@ def actualizar_precio(datos):
         # si no hay extra selecionado sea por que no se seleciono o no tiene
         # se devuelve el precio tipo de tamaño de ese producto
         return priceElementSelect
+
+def cart(request):
+    """Cart
+    
+        Filtrado de datos antes de añadir al cart
+
+    """
+    
+    if request.method == "POST":
+        # obtenemos los datos
+        datos = json.loads(request.body)
+        app_name = 'orders'
+        # Obtienemos los modelos de la aplicación
+        app_models = apps.get_app_config(app_name).get_models()
+        # Extraemos los nombres de las tablas de la base de datos de los modelos
+        # A las tablas donde guardo los productos les puse el mismo nombre de la class
+        table_names = [model._meta.db_table for model in app_models]
+
+        nombreModelo = ""
+        priceElementSelect = 0
+        precioExtra = 0
+        nuevoPrecioProducto = 0
+        for table_name in table_names:
+            if not table_name.__contains__("orders_"):
+                nombreModelo = table_name
+                Modelo = apps.get_model(app_name, nombreModelo)
+
+                # buscamos el elemento en cada tabla
+                try:
+                    # obtenemos la instancia del producto al que se le dio click
+                    producto = Modelo.objects.get(id=datos["idElement"], name=datos["nombreElement"])
+
+                    if datos["sizeElement"] == "":
+                        priceElementSelect = producto.price
+                        return JsonResponse(priceElementSelect, safe=False)
+
+                    # si el tamaño seleccionado es Small
+                    elif datos["sizeElement"] == "Small":
+                        priceElementSelect = producto.small_price
+
+                        # si viene uno o mas extras seleccionados
+                        if datos["extrasSelected"]:
+                            print("extra")
+                            # sumamos el precio de cada extra
+                            for i in range(len(datos["extrasSelected"])):
+                                for extra in producto.extras.all():
+                                    if datos["extrasSelected"][i] == extra.name:
+                                        precioExtra += extra.price
+                            # y al precio del elemento se le suma el precio de los extras totales
+                            nuevoPrecioProducto = priceElementSelect + precioExtra
+
+                            # retornamos el precio del elemento mas el total de los extras
+                            return JsonResponse(nuevoPrecioProducto, safe=False)
+
+                     # si el tamaño seleccionado es Large
+                    elif datos["sizeElement"] == "Large":
+                        priceElementSelect = producto.large_price
+
+                         # si viene uno o mas extras seleccionados
+                        if datos["extrasSelected"]:
+                            # sumamos el precio de cada extra
+                            for i in range(len(datos["extrasSelected"])):
+                                for extra in producto.extras.all():
+                                    if datos["extrasSelected"][i] == extra.name:
+                                        precioExtra += extra.price
+                            # y al precio del elemento se le suma el precio de los extras totales
+                            nuevoPrecioProducto = priceElementSelect + precioExtra
+
+                            # retornamos el precio del producto mas el precio de los extras
+                            return JsonResponse(nuevoPrecioProducto, safe=False)
+                except:
+                    nombreModelo = ""
+                    continue
+        
+        return JsonResponse(priceElementSelect, safe=False)
+    else:
+        return JsonResponse({"mensaje": "Método no permitido"}, status=405)

@@ -170,7 +170,7 @@ header {
     color: var(--detailfontcolor);
 }
 
-.total{
+.totalCarrito{
     display: flex;
     height: 41px;
     font-weight: 800;

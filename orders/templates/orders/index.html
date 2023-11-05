@@ -11,67 +11,16 @@
     <div class="flex-basket hide">
         <h2>Tu Carrito</h2>
         <div class="productosCarrito">
-            <div class="productoCarrito">
-                <div class="cantidadProductoCarrito">1</div>
-                <div class="descriptionProductoCarrito">
-                    <div class="nombreProductoCarrito">Sub Cheese</div>
-                    <ul class="extrasProductosCarritos">
-                        <p>Extras:</p>
-                        <li>- Extra Cheese</li>
-                    </ul>
-                </div>
-                <div class="tamañoProductoCarrito">Small</div>
-                <div class="precioProductoCarrito">$ 10.95</div>
-                <button class="eliminarProductoCarrito">X</button>
-            </div>
-        
-            <div class="productoCarrito">
-                <div class="cantidadProductoCarrito">1</div>
-                <div class="descriptionProductoCarrito">
-                    <div class="nombreProductoCarrito">Regular Pizza 3 Toppings</div>
-                    <ul class="extrasProductosCarritos">
-                        <p>Toppings:</p>
-                        <li>- Pepperoni</li>
-                        <li>- Jalapenos</li>
-                        <li>- Barbecue Chicken</li>
-                    </ul>
-                </div>
-                    <div class="tamañoProductoCarrito">Large</div>
-                    <div class="precioProductoCarrito">$ 25.45</div>
-                    <button class="eliminarProductoCarrito">X</button>
-            </div>
-            <div class="productoCarrito">
-                <div class="cantidadProductoCarrito">1</div>
-                <div class="descriptionProductoCarrito">
-                    <div class="nombreProductoCarrito">Greek Salad</div>
-                    <ul class="extrasProductosCarritos">
-                </div>
-                    <div class="tamañoProductoCarrito">Small</div>
-                    <div class="precioProductoCarrito">$ 19.45</div>
-                    <button class="eliminarProductoCarrito">X</button>
-            </div>
-            <div class="productoCarrito">
-                <div class="cantidadProductoCarrito">1</div>
-                <div class="descriptionProductoCarrito">
-                    <div class="nombreProductoCarrito">Baked Ziti w/Meatballs</div>
-                    <ul class="extrasProductosCarritos"></ul>
-                </div>
-                    <div class="tamañoProductoCarrito">Large</div>
-                    <div class="precioProductoCarrito">$ 75.00</div>
-                    <button class="eliminarProductoCarrito">X</button>
-            </div>
+            
         </div>
         <!--
         <a>Your basket looks a little empty. Why not check out some of <u
                 id="underline">our unbeatable deals?</u>-->
-            <div class="total">
-                <p>
-                Total: 
-                </p>
-                <span>$ 130.85</span>
+            <div class="totalCarrito">
+                <p>Total: </p><span></span>
             </div>
             <button id="checkout">Checkout</button>
-            <button id="vaciar">Vaciar</button>
+            <button id="vaciar" onclick="clearCart()">Vaciar</button>
     </div>
 </aside>
         {%endblock%}
