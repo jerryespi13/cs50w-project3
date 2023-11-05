@@ -5,221 +5,282 @@
 
 {%block carrito%}
 <aside>
-    <div class="logo"> <a href="#"> <img src="{% static 'images/logo.png'%}" ></a></div>
-    <div class="basketlogo " onclick="basketshow()"><img src="{% static 'images/icons/basket.webp'%}" alt=""></div>
+    <div class="logo"> <a href="#"> <img src="{% static 'images/logo.png'%}"></a></div>
+    <div class="basketlogo " onclick="basketshow()"><img
+            src="{% static 'images/icons/basket.webp'%}" alt></div>
     <div class="flex-basket hide">
         <h2>Tu Carrito</h2>
+        <div class="productosCarrito">
+            <div class="productoCarrito">
+                <div class="cantidadProductoCarrito">1</div>
+                <div class="descriptionProductoCarrito">
+                    <div class="nombreProductoCarrito">Sub Cheese</div>
+                    <ul class="extrasProductosCarritos">
+                        <p>Extras:</p>
+                        <li>- Extra Cheese</li>
+                    </ul>
+                </div>
+                <div class="tamañoProductoCarrito">Small</div>
+                <div class="precioProductoCarrito">$ 10.95</div>
+                <button class="eliminarProductoCarrito">X</button>
+            </div>
+        
+            <div class="productoCarrito">
+                <div class="cantidadProductoCarrito">1</div>
+                <div class="descriptionProductoCarrito">
+                    <div class="nombreProductoCarrito">Regular Pizza 3 Toppings</div>
+                    <ul class="extrasProductosCarritos">
+                        <p>Toppings:</p>
+                        <li>- Pepperoni</li>
+                        <li>- Jalapenos</li>
+                        <li>- Barbecue Chicken</li>
+                    </ul>
+                </div>
+                    <div class="tamañoProductoCarrito">Large</div>
+                    <div class="precioProductoCarrito">$ 25.45</div>
+                    <button class="eliminarProductoCarrito">X</button>
+            </div>
+            <div class="productoCarrito">
+                <div class="cantidadProductoCarrito">1</div>
+                <div class="descriptionProductoCarrito">
+                    <div class="nombreProductoCarrito">Greek Salad</div>
+                    <ul class="extrasProductosCarritos">
+                </div>
+                    <div class="tamañoProductoCarrito">Small</div>
+                    <div class="precioProductoCarrito">$ 19.45</div>
+                    <button class="eliminarProductoCarrito">X</button>
+            </div>
+            <div class="productoCarrito">
+                <div class="cantidadProductoCarrito">1</div>
+                <div class="descriptionProductoCarrito">
+                    <div class="nombreProductoCarrito">Baked Ziti w/Meatballs</div>
+                    <ul class="extrasProductosCarritos"></ul>
+                </div>
+                    <div class="tamañoProductoCarrito">Large</div>
+                    <div class="precioProductoCarrito">$ 75.00</div>
+                    <button class="eliminarProductoCarrito">X</button>
+            </div>
+        </div>
         <!--
-        <p id="voucher">Apply Voucher code or Gift Card  ></p>
-        -->
-        <a>Your basket looks a little empty. Why not check out some of <u id="underline">our unbeatable deals?</u>
-        <button id="checkout">Checkout</button>
+        <a>Your basket looks a little empty. Why not check out some of <u
+                id="underline">our unbeatable deals?</u>-->
+            <div class="total">
+                <p>
+                Total: 
+                </p>
+                <span>$ 130.85</span>
+            </div>
+            <button id="checkout">Checkout</button>
+            <button id="vaciar">Vaciar</button>
     </div>
 </aside>
-{%endblock%}
-{% block main %}
+        {%endblock%}
+        {% block main %}
 
-<section class="flex-container">
-    <h2 class="heading">Pizza</h2>
-    {% for pizza in pizzas %}
-    
-    <div class="flex-item2">
-        <p class="id_producto" style="display: none;">{{pizza.id}}</p>
-        <img src="/media/{{pizza.imagen}}" alt="Imagen de una pizza">
-        <p class="mainname2">
-            {{pizza.name}}
-        </p>
-        <p class="subdetails2" style="height: 110px;">
-            {{pizza.description}}
-        </p>
-        <p class="selectcrust2">
-            Select your size:
-        </p>
-        <div class="dropdown">
-            <div class="select">
-                <span class="selected">{{pizza.sizes.first}}</span>
-                <div class="caret"></div>
-            </div>
-            <ul class="menu">
-                <!--obtenemos los tamaños-->
-                {% for size in pizza.sizes.all %}
-                    <!-- al primer elemento le agregamos la clase active-->
-                    {% if forloop.first%}
-                        <li class="active">{{size}}</li>
-                    {%else%}
-                        <li>{{size}}</li>
-                    {%endif%}
-                {%endfor%}
-            </ul>
-        </div>
-        {%if pizza.numeroDeToppings != 0 %}
-            <p class="selectcrust2">
-                Select your toppings:
-            </p>
-            {% for _ in ''|center:pizza.numeroDeToppings %}
-                <div class="dropdown-topping">
+        <section class="flex-container">
+            <h2 class="heading">Pizza</h2>
+            {% for pizza in pizzas %}
+
+            <div class="flex-item2">
+                <p class="id_producto" style="display: none;">{{pizza.id}}</p>
+                <img src="/media/{{pizza.imagen}}" alt="Imagen de una pizza">
+                <p class="mainname2">
+                    {{pizza.name}}
+                </p>
+                <p class="subdetails2" style="height: 110px;">
+                    {{pizza.description}}
+                </p>
+                <p class="selectcrust2">
+                    Select your size:
+                </p>
+                <div class="dropdown">
                     <div class="select">
-                        <span class="selected">{{pizza.topping.first}}</span>
-                    <div class="caret"></div>
-                </div>
-                    <ul class="topping">
-                        <!--obtenemos los toppings-->
-                        {% for topping in pizza.topping.all %}
-                            <!-- al primer elemento le agregamos la clase active-->
-                            {% if forloop.first%}
-                                <li class="active">{{topping}}</li>
-                            {%else%}
-                                <li>{{topping}}</li>
-                            {%endif%}
+                        <span class="selected">{{pizza.sizes.first}}</span>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <!--obtenemos los tamaños-->
+                        {% for size in pizza.sizes.all %}
+                        <!-- al primer elemento le agregamos la clase active-->
+                        {% if forloop.first%}
+                        <li class="active">{{size}}</li>
+                        {%else%}
+                        <li>{{size}}</li>
+                        {%endif%}
                         {%endfor%}
                     </ul>
                 </div>
+                {%if pizza.numeroDeToppings != 0 %}
+                <p class="selectcrust2">
+                    Select your toppings:
+                </p>
+                {% for _ in ''|center:pizza.numeroDeToppings %}
+                <div class="dropdown-topping">
+                    <div class="select">
+                        <span class="selected">{{pizza.topping.first}}</span>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="topping">
+                        <!--obtenemos los toppings-->
+                        {% for topping in pizza.topping.all %}
+                        <!-- al primer elemento le agregamos la clase active-->
+                        {% if forloop.first%}
+                        <li class="active">{{topping}}</li>
+                        {%else%}
+                        <li>{{topping}}</li>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+                </div>
+                {%endfor%}
+                {%endif%}
+                <p class="price2">
+                    <button class="customisebtn2">
+                        Add <span class="sideprice">&#36 {{pizza.large_price}}</span>
+                    </button>
+                </p>
+            </div>
             {%endfor%}
-        {%endif%}
-        <p class="price2">
-            <button class="customisebtn2">
-                Add <span class="sideprice">&#36 {{pizza.large_price}}</span>
-            </button>
-        </p>
-    </div>
-    {%endfor%}
-</section>
+        </section>
 
- <!-- Subs section -->
-<section class="flex-container">
-    <h2 class="heading">Subs</h2>
-    {% for sub in subs %}
-    <div class="flex-item2">
-        <p class="id_producto" style="display:none;">{{sub.id}}</p>
-        <img src="/media/{{sub.imagen}}" alt="imagen de una pizza">
-        <p class="mainname2">
-            {{sub.name}}
-        </p>
-        <p class="subdetails2"  style="height: 157px;">
-            {{sub.description}}
-        </p>
-        <p class="selectcrust2">
-            Select your size:
-        </p>
-        <div class="dropdown">
-            <div class="select">
-                <span class="selected">{{sub.sizes.first}}</span>
-                <div class="caret"></div>
-            </div>
-            <ul class="menu">
-                <!--obtenemos los tamaños-->
-                {% for size in sub.sizes.all %}
-                    <!-- al primer elemento le agregamos la clase active-->
-                    {% if forloop.first%}
+        <!-- Subs section -->
+        <section class="flex-container">
+            <h2 class="heading">Subs</h2>
+            {% for sub in subs %}
+            <div class="flex-item2">
+                <p class="id_producto" style="display:none;">{{sub.id}}</p>
+                <img src="/media/{{sub.imagen}}" alt="imagen de una pizza">
+                <p class="mainname2">
+                    {{sub.name}}
+                </p>
+                <p class="subdetails2" style="height: 157px;">
+                    {{sub.description}}
+                </p>
+                <p class="selectcrust2">
+                    Select your size:
+                </p>
+                <div class="dropdown">
+                    <div class="select">
+                        <span class="selected">{{sub.sizes.first}}</span>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <!--obtenemos los tamaños-->
+                        {% for size in sub.sizes.all %}
+                        <!-- al primer elemento le agregamos la clase active-->
+                        {% if forloop.first%}
                         <li class="active">{{size}}</li>
-                    {%else%}
+                        {%else%}
                         <li>{{size}}</li>
-                    {%endif%}
-                {%endfor%}
-            </ul>
-        </div>
-        <p class="selectcrust2">
-            Select your extra:
-        </p>
-        
-            <div class="extra">
-                <!--obtenemos los extras disponibles para cada sub-->
-                {% for extra in sub.extras.all %}
-                    <label for="{{sub.name}}{{extra}}"><input class="inputExtra" type="checkbox" name="{{extra}}" id="{{sub.name}}{{extra}}">{{extra.name}} &#36 {{extra.price}}</label>
-                {%endfor%}
-            </div>
-        
-        <p class="price2">
-            <button class="customisebtn2">
-                Add <span class="sideprice">&#36 {{sub.large_price}}</span>
-            </button>
-        </p>
-    </div>
-    {%endfor%}
-</section>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+                </div>
+                <p class="selectcrust2">
+                    Select your extra:
+                </p>
 
- <!-- Pasta section -->
- <section class="flex-container">
-    <h2 class="heading">Pasta</h2>
-    {% for pasta in pastas %}
-    <div class="flex-item2">
-        <p class="id_producto" style="display: none;">{{pasta.id}}</p>
-        <img src="/media/{{pasta.imagen}}" alt="imagen de una Pasta">
-        <p class="mainname2">
-            {{pasta.name}}
-        </p>
-        <p class="subdetails2"  style="height: 90px;">
-            {{pasta.description}}
-        </p>
-        <p class="price2">
-            <button class="customisebtn2">
-                Add <span class="sideprice">&#36 {{pasta.price}}</span>
-            </button>
-        </p>
-    </div>
-    {%endfor%}
-</section>
-<!-- Salads section -->
-<section class="flex-container">
-    <h2 class="heading">Salads</h2>
-    {% for salad in salads %}
-    <div class="flex-item2">
-        <p class="id_producto" style="display: none;">{{salad.id}}</p>
-        <img src="/media/{{salad.imagen}}" alt="imagen de una ensalada">
-        <p class="mainname2">
-            {{salad.name}}
-        </p>
-        <p class="subdetails2"  style="height: 157px;">
-            {{salad.description}}
-        </p>
-        <p class="price2">
-            <button class="customisebtn2">
-                Add <span class="sideprice">&#36 {{salad.price}}</span>
-            </button>
-        </p>
-    </div>
-    {%endfor%}
-</section>
-<!-- Dinner Plates section -->
-<section class="flex-container">
-    <h2 class="heading">Dinner Plates</h2>
-    {% for dinner in dinners %}
-    <div class="flex-item2">
-        <p class="id_producto" style="display: none;">{{dinner.id}}</p>
-        <img src="/media/{{dinner.imagen}}" alt="imagen de una ensalada">
-        <p class="mainname2">
-            {{dinner.name}}
-        </p>
-        <p class="subdetails2"  style="height: 157px;">
-            {{dinner.description}}
-        </p>
-        <p class="selectcrust2">
-            Select your size:
-        </p>
-        <div class="dropdown">
-            <div class="select">
-                <span class="selected">{{dinner.sizes.first}}</span>
-                <div class="caret"></div>
+                <div class="extra">
+                    <!--obtenemos los extras disponibles para cada sub-->
+                    {% for extra in sub.extras.all %}
+                    <label for="{{sub.name}}{{extra}}"><input class="inputExtra"
+                            type="checkbox" name="{{extra}}"
+                            id="{{sub.name}}{{extra}}">{{extra.name}} &#36
+                        {{extra.price}}</label>
+                    {%endfor%}
+                </div>
+
+                <p class="price2">
+                    <button class="customisebtn2">
+                        Add <span class="sideprice">&#36 {{sub.large_price}}</span>
+                    </button>
+                </p>
             </div>
-            <ul class="menu">
-                <!--obtenemos los tamaños-->
-                {% for size in dinner.sizes.all %}
-                    <!-- al primer elemento le agregamos la clase active-->
-                    {% if forloop.first%}
+            {%endfor%}
+        </section>
+
+        <!-- Pasta section -->
+        <section class="flex-container">
+            <h2 class="heading">Pasta</h2>
+            {% for pasta in pastas %}
+            <div class="flex-item2">
+                <p class="id_producto" style="display: none;">{{pasta.id}}</p>
+                <img src="/media/{{pasta.imagen}}" alt="imagen de una Pasta">
+                <p class="mainname2">
+                    {{pasta.name}}
+                </p>
+                <p class="subdetails2" style="height: 90px;">
+                    {{pasta.description}}
+                </p>
+                <p class="price2">
+                    <button class="customisebtn2">
+                        Add <span class="sideprice">&#36 {{pasta.price}}</span>
+                    </button>
+                </p>
+            </div>
+            {%endfor%}
+        </section>
+        <!-- Salads section -->
+        <section class="flex-container">
+            <h2 class="heading">Salads</h2>
+            {% for salad in salads %}
+            <div class="flex-item2">
+                <p class="id_producto" style="display: none;">{{salad.id}}</p>
+                <img src="/media/{{salad.imagen}}" alt="imagen de una ensalada">
+                <p class="mainname2">
+                    {{salad.name}}
+                </p>
+                <p class="subdetails2" style="height: 157px;">
+                    {{salad.description}}
+                </p>
+                <p class="price2">
+                    <button class="customisebtn2">
+                        Add <span class="sideprice">&#36 {{salad.price}}</span>
+                    </button>
+                </p>
+            </div>
+            {%endfor%}
+        </section>
+        <!-- Dinner Plates section -->
+        <section class="flex-container">
+            <h2 class="heading">Dinner Plates</h2>
+            {% for dinner in dinners %}
+            <div class="flex-item2">
+                <p class="id_producto" style="display: none;">{{dinner.id}}</p>
+                <img src="/media/{{dinner.imagen}}" alt="imagen de una ensalada">
+                <p class="mainname2">
+                    {{dinner.name}}
+                </p>
+                <p class="subdetails2" style="height: 157px;">
+                    {{dinner.description}}
+                </p>
+                <p class="selectcrust2">
+                    Select your size:
+                </p>
+                <div class="dropdown">
+                    <div class="select">
+                        <span class="selected">{{dinner.sizes.first}}</span>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <!--obtenemos los tamaños-->
+                        {% for size in dinner.sizes.all %}
+                        <!-- al primer elemento le agregamos la clase active-->
+                        {% if forloop.first%}
                         <li class="active">{{size}}</li>
-                    {%else%}
+                        {%else%}
                         <li>{{size}}</li>
-                    {%endif%}
-                {%endfor%}
-            </ul>
-        </div>
-        <p class="price2">
-            <button class="customisebtn2">
-                Add <span class="sideprice">&#36 {{dinner.large_price}}</span>
-            </button>
-        </p>
-    </div>
-    {%endfor%}
-</section>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+                </div>
+                <p class="price2">
+                    <button class="customisebtn2">
+                        Add <span class="sideprice">&#36 {{dinner.large_price}}</span>
+                    </button>
+                </p>
+            </div>
+            {%endfor%}
+        </section>
 
-{% endblock %}
+        {% endblock %}
