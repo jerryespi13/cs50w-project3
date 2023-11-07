@@ -105,3 +105,30 @@ class Pasta(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+    
+# tabla ordenes
+class Orden(models.Model):
+    ESTADOS = (
+         ('P', 'Pendiente'),
+        ('E', 'Enviado'),
+        ('R', 'Recibido'),
+        ('C', 'Cancelado')
+    )
+
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True)
+    estado = models.CharField(max_length=1, choices=ESTADOS, default='P')
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f'Orden #{self.id} - {self.usuario.username} - {self.get_estado_display()}'
+    
+# productos agregados en cada orden
+class OrdenProducto(models.Model):
+    orden = models.ForeignKey(Orden, related_name='productos', on_delete=models.CASCADE)
+    pizza = models.ForeignKey(Pizza, null=True, blank=True, on_delete=models.CASCADE)
+    sub = models.ForeignKey(Sub, null=True, blank=True, on_delete=models.CASCADE)
+    pasta = models.ForeignKey(Pasta, null=True, blank=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.cantidad} de {self.producto.name} en Orden #{self.orden.id}'
