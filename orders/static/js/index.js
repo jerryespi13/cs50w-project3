@@ -177,6 +177,7 @@ for (var i = 0; i < buttons.length; i++) {
 
         // obtenemos la informacion necesaria del producto a añadir al carrito
         let datosCart = {}
+        let idInCart = cart.length + 1
         let extrasSelected = []
         let toppingsSelected = []
         let extrasStr = ""
@@ -203,6 +204,7 @@ for (var i = 0; i < buttons.length; i++) {
         })
         datosCart = {
             "idElement": idElement,
+            "idInCart": idInCart,
             "nombreElement": nombreProducto,
             "sizeElement": sizeElement,
             "cantidad": 1
@@ -238,17 +240,16 @@ for (var i = 0; i < buttons.length; i++) {
 }
 
 function printCart(){
-    let totalPrice = 0
     cartContainer.innerHTML = ""
+    totalCart.lastElementChild.innerHTML =""
     cart.forEach(product=>{
-        totalPrice = totalPrice + parseFloat(product["precio"])
         if (product["extrasSelected"]){
             cartContainer.innerHTML += `
                             <div class="productoCarrito">
                                 <div class="cantidadProductoCarrito">
-                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                    <i class="fa fa-plus-circle" onclick="sumar (${product["idInCart"]})" aria-hidden="true"></i>
                                     ${product["cantidad"]}
-                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                    <i class="fa fa-minus-circle" onclick="restar(${product["idInCart"]})" aria-hidden="true"></i>
                                 </div>
                                 <div class="descriptionProductoCarrito">
                                     <div class="nombreProductoCarrito">${product["nombreElement"]}</div>
@@ -259,16 +260,16 @@ function printCart(){
                                 </div>
                                 <div class="tamañoProductoCarrito">${product["sizeElement"]}</div>
                                 <div class="precioProductoCarrito">$ ${product["precio"]}</div>
-                                <button class="eliminarProductoCarrito">X</button>
+                                <button class="eliminarProductoCarrito" onclick="eliminar(${product["idInCart"]})" >X</button>
                             </div>`
         }
         else if(product["toppingsSelected"]){
             cartContainer.innerHTML += `
                             <div class="productoCarrito">
                                 <div class="cantidadProductoCarrito">
-                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                <i class="fa fa-plus-circle" onclick="sumar (${product["idInCart"]})" aria-hidden="true"></i>
                                 ${product["cantidad"]}
-                                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                <i class="fa fa-minus-circle" onclick="restar(${product["idInCart"]})" aria-hidden="true"></i>
                                 </div>
                                 <div class="descriptionProductoCarrito">
                                     <div class="nombreProductoCarrito">${product["nombreElement"]}</div>
@@ -279,16 +280,16 @@ function printCart(){
                                 </div>
                                 <div class="tamañoProductoCarrito">${product["sizeElement"]}</div>
                                 <div class="precioProductoCarrito">$ ${product["precio"]}</div>
-                                <button class="eliminarProductoCarrito">X</button>
+                                <button class="eliminarProductoCarrito" onclick="eliminar(${product["idInCart"]})" >X</button>
                             </div>`
         }
         else{
             cartContainer.innerHTML += `
                             <div class="productoCarrito">
                                 <div class="cantidadProductoCarrito">
-                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                <i class="fa fa-plus-circle" onclick="sumar (${product["idInCart"]})" aria-hidden="true"></i>
                                 ${product["cantidad"]}
-                                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                <i class="fa fa-minus-circle" onclick="restar(${product["idInCart"]})" aria-hidden="true"></i>
                                 </div>
                                 <div class="descriptionProductoCarrito">
                                     <div class="nombreProductoCarrito">${product["nombreElement"]}</div>
@@ -299,11 +300,11 @@ function printCart(){
                                 <div class="tamañoProductoCarrito">${product["sizeElement"]}</div>
                                 <div class="precioProductoCarrito">$ ${product["precio"]}</div>
                                 
-                                <button class="eliminarProductoCarrito">X</button>
+                                <button class="eliminarProductoCarrito" onclick="eliminar(${product["idInCart"]})" >X</button>
                             </div>`
         }
         cartContainer.lastChild.scrollIntoView(false)
-        totalCart.lastElementChild.innerHTML = currency + totalPrice.toFixed(2)
+        totalCart.lastElementChild.innerHTML = total()
     })
 }
 
@@ -311,4 +312,48 @@ function clearCart() {
     cart = [];
     printCart();
     totalCart.lastElementChild.innerHTML = ""
+}
+
+function total(){
+    let total = 0
+    cart.forEach(product=>{
+        let cantidad = product["cantidad"]
+        let precio = product["precio"]
+        let totalProduct = precio * cantidad
+        total += totalProduct
+    })
+    return currency + total.toFixed(2)
+}
+
+function eliminar(id){
+    for (let i = 0; i < cart.length; i++){
+        if (cart[i]["idInCart"] === id){
+            cart.splice(i,1)
+            break
+        }
+    }
+    printCart();
+}
+
+function sumar(id){
+    for (let i = 0; i < cart.length; i++){
+        if (cart[i]["idInCart"] === id){
+            cart[i]["cantidad"] += 1
+            break
+        }
+    }
+    printCart();
+}
+
+function restar(id){
+    for (let i = 0; i < cart.length; i++){
+        if (cart[i]["idInCart"] === id){
+            cart[i]["cantidad"] -= 1
+            if(cart[i]["cantidad"] === 0){
+                eliminar(id)
+            }
+            break
+        }
+    }
+    printCart();
 }
