@@ -118,7 +118,7 @@ class Orden(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=1, choices=ESTADOS, default='P')
-    total = models.DecimalField(max_digits=10, decimal_places=2)
+    
 
     def __str__(self):
         return f'Orden #{self.id} - {self.usuario.username} - {self.get_estado_display()}'
@@ -129,6 +129,7 @@ class OrdenProducto(models.Model):
     pizza = models.ForeignKey(Pizza, null=True, blank=True, on_delete=models.CASCADE)
     sub = models.ForeignKey(Sub, null=True, blank=True, on_delete=models.CASCADE)
     pasta = models.ForeignKey(Pasta, null=True, blank=True, on_delete=models.CASCADE)
+    total = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f'{self.cantidad} de {self.producto.name} en Orden #{self.orden.id}'
