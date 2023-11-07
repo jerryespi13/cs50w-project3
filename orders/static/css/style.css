@@ -121,6 +121,18 @@ header {
 
 .cantidadProductoCarrito{
     width: 10px;
+    padding: 0 10px 0 5px;
+}
+
+.cantidadProductoCarrito i{
+    color: #1f8a3a;
+    opacity: 0.8;
+}
+
+.cantidadProductoCarrito i:hover{
+    color: #1f8a3a;
+    cursor: pointer;
+    opacity: 1;
 }
 
 .descriptionProductoCarrito{

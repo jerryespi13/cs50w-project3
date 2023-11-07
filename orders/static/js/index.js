@@ -204,7 +204,8 @@ for (var i = 0; i < buttons.length; i++) {
         datosCart = {
             "idElement": idElement,
             "nombreElement": nombreProducto,
-            "sizeElement": sizeElement
+            "sizeElement": sizeElement,
+            "cantidad": 1
         }
 
         if (extrasSelected.length !== 0){
@@ -244,7 +245,11 @@ function printCart(){
         if (product["extrasSelected"]){
             cartContainer.innerHTML += `
                             <div class="productoCarrito">
-                                <div class="cantidadProductoCarrito">1</div>
+                                <div class="cantidadProductoCarrito">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                    ${product["cantidad"]}
+                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                </div>
                                 <div class="descriptionProductoCarrito">
                                     <div class="nombreProductoCarrito">${product["nombreElement"]}</div>
                                     <ul class="extrasProductosCarritos">
@@ -260,7 +265,11 @@ function printCart(){
         else if(product["toppingsSelected"]){
             cartContainer.innerHTML += `
                             <div class="productoCarrito">
-                                <div class="cantidadProductoCarrito">1</div>
+                                <div class="cantidadProductoCarrito">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                ${product["cantidad"]}
+                                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                </div>
                                 <div class="descriptionProductoCarrito">
                                     <div class="nombreProductoCarrito">${product["nombreElement"]}</div>
                                     <ul class="extrasProductosCarritos">
@@ -276,7 +285,11 @@ function printCart(){
         else{
             cartContainer.innerHTML += `
                             <div class="productoCarrito">
-                                <div class="cantidadProductoCarrito">1</div>
+                                <div class="cantidadProductoCarrito">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                ${product["cantidad"]}
+                                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                </div>
                                 <div class="descriptionProductoCarrito">
                                     <div class="nombreProductoCarrito">${product["nombreElement"]}</div>
                                     <ul class="extrasProductosCarritos">
@@ -285,6 +298,7 @@ function printCart(){
                                 </div>
                                 <div class="tamañoProductoCarrito">${product["sizeElement"]}</div>
                                 <div class="precioProductoCarrito">$ ${product["precio"]}</div>
+                                
                                 <button class="eliminarProductoCarrito">X</button>
                             </div>`
         }
