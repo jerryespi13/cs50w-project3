@@ -18,6 +18,12 @@ const extras = document.querySelectorAll('.extra')
 // dropdown para toppings
 const dropdownsToppings = document.querySelectorAll('.dropdown-topping');
 
+let usuario = ""
+if(document.getElementById("usuario")){
+    usuario = document.getElementById("usuario").innerText
+}
+
+
 // obtenemos csrftoken para poder trabajar con fetch
 function getCookie(name) {
     let cookieValue = null;
@@ -400,3 +406,29 @@ document.addEventListener('DOMContentLoaded', function() {
     printCart()
 });
 
+function realizarPedido(){
+    if (cesta.length === 0){
+        cartContainer.innerHTML = `<h4 style="color: red; padding-left: 20px;">Primero añade al menos un producto en el cart</h4>`
+        return
+    }
+    console.log(cesta)
+    let dato = []
+    dato.push(cesta)
+    dato.push(usuario)
+    fetch(`${window.origin}/realizar_pedido`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'orders/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify(dato)
+    })
+    .then(response => response.json())
+    .then(data => {console.log("pedio")
+    // se limpia el cart
+    cesta = []
+    localStorage.removeItem("cart")
+    printCart()
+}
+    );
+}

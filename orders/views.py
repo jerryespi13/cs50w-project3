@@ -132,6 +132,10 @@ def calcular_precio(datos):
                 try:
                     # obtenemos la instancia del producto al que se le dio click
                     producto = Modelo.objects.get(id=datos["idElement"], name=datos["nombreElement"])
+                    # para los productos que no tienen size, que solo tinenen un precio: pasta y Salads
+                    if not datos["sizeElement"]:
+                        priceElementSelect = producto.price
+                        return priceElementSelect
 
                     # si el tamaño seleccionado es Small
                     if datos["sizeElement"] == "Small":
@@ -252,3 +256,25 @@ def cart(request):
     else:
         return JsonResponse({"mensaje": "Método no permitido"}, status=405)
 
+def realizar_pedido(request):
+    if request.method == "POST":
+        print("aqui andamos")
+        # obtenemos los datos
+        totalCart = 0
+        datos = json.loads(request.body) 
+        # el usuario siempre viene de ultimo en la variable datos
+        usuario = datos[-1]
+        print(usuario)
+        print(len(datos[0]))
+        
+        for i in range(len(datos[0])):
+            print(datos[0][i])
+            # calculamos el precio de cada producto multiplicado por su cantidad
+            precio = calcular_precio(datos[0][i]) * datos[0][i]["cantidad"]
+            # el precio de cada producto se va sumanando al total
+            totalCart += precio
+            print(precio)
+            print("-------------------------------------------------------")
+        print(totalCart)
+
+        return JsonResponse({"mensaje":"llego"})

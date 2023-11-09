@@ -118,18 +118,21 @@ class Orden(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=1, choices=ESTADOS, default='P')
-    
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):
-        return f'Orden #{self.id} - {self.usuario.username} - {self.get_estado_display()}'
+        return f'Orden #{self.id} - {self.usuario.username} - {self.usuario.total} - {self.get_estado_display()}'
     
 # productos agregados en cada orden
 class OrdenProducto(models.Model):
     orden = models.ForeignKey(Orden, related_name='productos', on_delete=models.CASCADE)
-    pizza = models.ForeignKey(Pizza, null=True, blank=True, on_delete=models.CASCADE)
-    sub = models.ForeignKey(Sub, null=True, blank=True, on_delete=models.CASCADE)
-    pasta = models.ForeignKey(Pasta, null=True, blank=True, on_delete=models.CASCADE)
-    total = models.DecimalField(max_digits=10, decimal_places=2)
+    cantidad =  models.IntegerField(default=0)
+    name = models.CharField(max_length=64, default="")
+    size = models.ForeignKey(Tamaño, related_name="ordenProduct", on_delete=models.PROTECT, default="", blank=True)
+    price = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    extras = models.ManyToManyField(Extra, blank=True, related_name="subOrden", null=True)
+    toppings = models.ManyToManyField(Topping, related_name="pizzaOrden", blank=True)
 
     def __str__(self):
-        return f'{self.cantidad} de {self.producto.name} en Orden #{self.orden.id}'
+        return f'{self.cantidad} - {self.producto.name} en Orden #{self.orden.id}'
+    
