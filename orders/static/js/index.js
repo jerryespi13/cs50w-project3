@@ -2,9 +2,9 @@ let numerosExtras = 0;
 
 let currency = "$ "
 
-let cart = localStorage.getItem("cart")
-if(cart === null){
-    cart = []
+let cesta = localStorage.getItem("cart")
+if(cesta === null){
+    cesta = []
   }
 
 // contenedor del carrito
@@ -167,7 +167,7 @@ function actualizarPrecio( datos, priceElement){
 function printCart(){
     cartContainer.innerHTML = ""
     totalCart.lastElementChild.innerHTML =""
-    cart.forEach(product=>{
+    cesta.forEach(product=>{
         if (product["extrasSelected"]){
             cartContainer.innerHTML += `
                             <div class="productoCarrito">
@@ -234,14 +234,14 @@ function printCart(){
 }
 
 function clearCart() {
-    cart = [];
+    cesta = [];
     printCart();
     totalCart.lastElementChild.innerHTML = ""
 }
 
 function total(){
     let total = 0
-    cart.forEach(product=>{
+    cesta.forEach(product=>{
         let cantidad = product["cantidad"]
         let precio = product["precio"]
         let totalProduct = precio * cantidad
@@ -251,9 +251,9 @@ function total(){
 }
 
 function eliminar(id){
-    for (let i = 0; i < cart.length; i++){
-        if (cart[i]["idInCart"] === id){
-            cart.splice(i,1)
+    for (let i = 0; i < cesta.length; i++){
+        if (cesta[i]["idInCart"] === id){
+            cesta.splice(i,1)
             break
         }
     }
@@ -261,9 +261,9 @@ function eliminar(id){
 }
 
 function sumar(id){
-    for (let i = 0; i < cart.length; i++){
-        if (cart[i]["idInCart"] === id){
-            cart[i]["cantidad"] += 1
+    for (let i = 0; i < cesta.length; i++){
+        if (cesta[i]["idInCart"] === id){
+            cesta[i]["cantidad"] += 1
             break
         }
     }
@@ -271,10 +271,10 @@ function sumar(id){
 }
 
 function restar(id){
-    for (let i = 0; i < cart.length; i++){
-        if (cart[i]["idInCart"] === id){
-            cart[i]["cantidad"] -= 1
-            if(cart[i]["cantidad"] === 0){
+    for (let i = 0; i < cesta.length; i++){
+        if (cesta[i]["idInCart"] === id){
+            cesta[i]["cantidad"] -= 1
+            if(cesta[i]["cantidad"] === 0){
                 eliminar(id)
             }
             break
@@ -291,7 +291,7 @@ function IniciarSession(){
 function salir(){
     // limpiamos el cart
     localStorage.removeItem("cart")
-    cart = []
+    cesta = []
     fetch(`${window.origin}/logout`, {
         method: 'POST',
         headers: {
@@ -321,7 +321,7 @@ for (let i = 0; i < buttons.length; i++) {
 
         // obtenemos la informacion necesaria del producto a añadir al carrito
         let datosCart = {}
-        let idInCart = cart.length + 1
+        let idInCart = cesta.length + 1
         let extrasSelected = []
         let toppingsSelected = []
         let extrasStr = ""
@@ -376,7 +376,7 @@ for (let i = 0; i < buttons.length; i++) {
         .then(response => response.json())
         .then(data => {
             datosCart["precio"] = data
-            cart.push(datosCart)
+            cesta.push(datosCart)
             printCart()
             }
         );
@@ -385,7 +385,7 @@ for (let i = 0; i < buttons.length; i++) {
 
 // guardamos el cart en localstorage
 window.addEventListener('beforeunload', function (e) {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('cart', JSON.stringify(cesta));
 });
 
 // recuperamos el cart de localstorage
@@ -394,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let cartJSON = localStorage.getItem('cart');
     if (cartJSON) {
         // Si el carrito existe en localStorage lo convertimos de nuevo a un objeto
-        cart = JSON.parse(cartJSON);
+        cesta = JSON.parse(cartJSON);
     }
     // pintamos el carrito
     printCart()
