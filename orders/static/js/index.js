@@ -2,12 +2,21 @@ let numerosExtras = 0;
 
 let currency = "$ "
 
-let cart = []
+let cart = localStorage.getItem("cart")
+if(cart === null){
+    cart = []
+  }
 
+// contenedor del carrito
 const cartContainer = document.querySelector(".productosCarrito")
+// total del carrito
 const totalCart = document.querySelector(".totalCarrito")
-
-
+// dropdown menu 
+const dropdowns = document.querySelectorAll('.dropdown');
+// extras
+const extras = document.querySelectorAll('.extra')
+// dropdown para toppings
+const dropdownsToppings = document.querySelectorAll('.dropdown-topping');
 
 // obtenemos csrftoken para poder trabajar con fetch
 function getCookie(name) {
@@ -27,9 +36,6 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 
-
-// dropdown menu 
-const dropdowns = document.querySelectorAll('.dropdown');
 dropdowns.forEach(dropdown =>{
     const select = dropdown.querySelector('.select');
     const caret = dropdown.querySelector('.caret');
@@ -85,11 +91,8 @@ function basketshow(){
     Basket.classList.toggle("hide")
 }
 
-// extras
-const extras = document.querySelectorAll('.extra')
 extras.forEach(extra =>{
     const extraSelect = extra.querySelectorAll('.inputExtra')
-    
     extraSelect.forEach(extraClick =>{
         extraClick.addEventListener('click', ()=>{
             let padreNode = extraClick.parentElement.parentElement.parentElement
@@ -120,8 +123,6 @@ extras.forEach(extra =>{
     })
 })
 
-// dropdown para toppings
-const dropdownsToppings = document.querySelectorAll('.dropdown-topping');
 dropdownsToppings.forEach(dropdownTopping =>{
     const select = dropdownTopping.querySelector('.select');
     const caret = dropdownTopping.querySelector('.caret');
@@ -161,82 +162,6 @@ function actualizarPrecio( datos, priceElement){
     .then(response => response.json())
     .then(data => priceElement.textContent = currency + data
     );
-}
-
-// add to cart
-//Seleccionamos todos los botones con la class 'customisebtn2'
-var buttons = document.querySelectorAll('.customisebtn2');
-
-// ciclo para cada button
-for (var i = 0; i < buttons.length; i++) {
-    // agragemos un evento de escucha en cada boton
-    buttons[i].addEventListener('click', function() {
-        // 'this' se refiere al boton que se le dio click
-        // 'closest' Busca el antecesor mas cercano que coincida con el selectot 'flex-item2'
-        var container = this.closest('.flex-item2');
-
-        // obtenemos la informacion necesaria del producto a añadir al carrito
-        let datosCart = {}
-        let idInCart = cart.length + 1
-        let extrasSelected = []
-        let toppingsSelected = []
-        let extrasStr = ""
-        let toppingsStr = ""
-        let idElement = container.querySelector(".id_producto").innerHTML;
-        let nombreProducto = container.querySelector('.mainname2').innerText;
-
-        // obtenemos los toppings seleccionados si tiene
-        let nombresToppings = container.querySelectorAll(".topping")
-        nombresToppings.forEach(nombreTopping=>{
-            toppingsSelected.push(nombreTopping.querySelector(".active").innerText)
-            toppingsStr += `<li>- ${nombreTopping.querySelector(".active").innerText}</li>`;
-        })
-
-        // obtenemos los extras seleccionados si tiene
-        let sizeElement = container.querySelector(".selected") ? container.querySelector(".selected").innerText : ""
-        let nombresExtras = container.querySelectorAll(".inputExtra");
-        nombresExtras.forEach(nombreExtra=>{
-            if (nombreExtra.checked){
-                let extra = nombreExtra.parentElement.innerText.split(" $")[0]
-                extrasSelected.push(extra)
-                extrasStr += `<li>- ${extra}</li>`;
-            }
-        })
-        datosCart = {
-            "idElement": idElement,
-            "idInCart": idInCart,
-            "nombreElement": nombreProducto,
-            "sizeElement": sizeElement,
-            "cantidad": 1
-        }
-
-        if (extrasSelected.length !== 0){
-            datosCart['extrasSelected'] = extrasSelected
-            datosCart["extrasStr"] = extrasStr
-        }
-
-        if (toppingsSelected.length !== 0){
-            datosCart['toppingsSelected'] = toppingsSelected
-            datosCart["toppingsStr"] = toppingsStr
-        }
-        
-        // validamos los datos
-        fetch(`${window.origin}/cart`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'orders/json',
-                'X-CSRFToken': csrftoken
-            },
-            body: JSON.stringify(datosCart)
-        })
-        .then(response => response.json())
-        .then(data => {
-            datosCart["precio"] = data
-            cart.push(datosCart)
-            printCart()
-            }
-        );
-    });
 }
 
 function printCart(){
@@ -357,3 +282,121 @@ function restar(id){
     }
     printCart();
 }
+
+function IniciarSession(){
+    window.location.href = `${window.origin}/login`
+}
+
+
+function salir(){
+    // limpiamos el cart
+    localStorage.removeItem("cart")
+    cart = []
+    fetch(`${window.origin}/logout`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'orders/json',
+            'X-CSRFToken': csrftoken
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        window.location.href = `${window.origin}/${data}`
+        }
+    );
+}    
+
+// add to cart
+//Seleccionamos todos los botones con la class 'customisebtn2'
+let buttons = document.querySelectorAll('.customisebtn2');
+// ciclo para cada button
+// añade el producto al carrito y el total del producto en dependencia
+// de los extras o toppings seleccionados se calcula en el backend con los datos en DB
+for (let i = 0; i < buttons.length; i++) {
+    // agragemos un evento de escucha en cada boton
+    buttons[i].addEventListener('click', function() {
+        // 'this' se refiere al boton que se le dio click
+        // 'closest' Busca el antecesor mas cercano que coincida con el selectot 'flex-item2'
+        let container = this.closest('.flex-item2');
+
+        // obtenemos la informacion necesaria del producto a añadir al carrito
+        let datosCart = {}
+        let idInCart = cart.length + 1
+        let extrasSelected = []
+        let toppingsSelected = []
+        let extrasStr = ""
+        let toppingsStr = ""
+        let idElement = container.querySelector(".id_producto").innerHTML;
+        let nombreProducto = container.querySelector('.mainname2').innerText;
+
+        // obtenemos los toppings seleccionados si tiene
+        let nombresToppings = container.querySelectorAll(".topping")
+        nombresToppings.forEach(nombreTopping=>{
+            toppingsSelected.push(nombreTopping.querySelector(".active").innerText)
+            toppingsStr += `<li>- ${nombreTopping.querySelector(".active").innerText}</li>`;
+        })
+
+        // obtenemos los extras seleccionados si tiene
+        let sizeElement = container.querySelector(".selected") ? container.querySelector(".selected").innerText : ""
+        let nombresExtras = container.querySelectorAll(".inputExtra");
+        nombresExtras.forEach(nombreExtra=>{
+            if (nombreExtra.checked){
+                let extra = nombreExtra.parentElement.innerText.split(" $")[0]
+                extrasSelected.push(extra)
+                extrasStr += `<li>- ${extra}</li>`;
+            }
+        })
+        datosCart = {
+            "idElement": idElement,
+            "idInCart": idInCart,
+            "nombreElement": nombreProducto,
+            "sizeElement": sizeElement,
+            "cantidad": 1
+        }
+
+        if (extrasSelected.length !== 0){
+            datosCart['extrasSelected'] = extrasSelected
+            datosCart["extrasStr"] = extrasStr
+        }
+
+        if (toppingsSelected.length !== 0){
+            datosCart['toppingsSelected'] = toppingsSelected
+            datosCart["toppingsStr"] = toppingsStr
+        }
+        
+        // validamos los datos
+        fetch(`${window.origin}/cart`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'orders/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(datosCart)
+        })
+        .then(response => response.json())
+        .then(data => {
+            datosCart["precio"] = data
+            cart.push(datosCart)
+            printCart()
+            }
+        );
+    });
+}
+
+// guardamos el cart en localstorage
+window.addEventListener('beforeunload', function (e) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+});
+
+// recuperamos el cart de localstorage
+document.addEventListener('DOMContentLoaded', function() {
+    // Intentamos recuperar el carrito de localStorage
+    let cartJSON = localStorage.getItem('cart');
+    if (cartJSON) {
+        // Si el carrito existe en localStorage lo convertimos de nuevo a un objeto
+        cart = JSON.parse(cartJSON);
+    }
+    // pintamos el carrito
+    printCart()
+});
+

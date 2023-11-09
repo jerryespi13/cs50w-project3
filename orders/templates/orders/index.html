@@ -19,7 +19,11 @@
             <div class="totalCarrito">
                 <p>Total: </p><span></span>
             </div>
-            <button id="checkout">Checkout</button>
+            {% if user.is_authenticated %}
+                <button id="checkout" onclick="realizarPedido()">Checkout</button>
+            {% else %}
+                <button id="checkout_noSesion" onclick="IniciarSession()"><span>Checkout</span> <p>Inicia Sesión</p></button>
+            {% endif %}
             <button id="vaciar" onclick="clearCart()">Vaciar</button>
     </div>
 </aside>

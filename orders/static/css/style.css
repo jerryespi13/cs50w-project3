@@ -63,6 +63,9 @@ header {
     align-items: center;
 }
 
+#logout{
+    cursor: pointer;
+}
 /* Basket styling */
 
 .flex-basket {
@@ -204,6 +207,24 @@ header {
     width: 24vw;
     border-radius: 6px;
     border: solid white;
+}
+
+#checkout_noSesion{
+    display: inline-block;
+    font-size: medium;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: var(--buttoncolor1);
+    color: white;
+    height: 41px;
+    width: 24vw;
+    border-radius: 6px;
+    border: solid white;
+}
+#checkout_noSesion span{
+    text-decoration: double line-through;
+    color: #ffffff92;
 }
 
 #vaciar {

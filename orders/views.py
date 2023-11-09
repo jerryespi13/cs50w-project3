@@ -15,6 +15,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+totalOrden = 0
 
 # Create your views here.
 def index(request):
@@ -94,7 +95,7 @@ def login(request):
     
 def logout(request):
     logout_auth(request)
-    return render(request, "orders/login.html")
+    return JsonResponse("login", safe=False)
 
 # cambiar precio en pantalla
 def change_Price(request):
@@ -103,14 +104,14 @@ def change_Price(request):
         datos = json.loads(request.body)
 
         # obtenemos el precio del producto
-        precioProducto = actualizar_precio(datos)
+        precioProducto = calcular_precio(datos)
 
         return JsonResponse(precioProducto, safe=False)
     else:
         return JsonResponse({"mensaje": "Método no permitido"}, status=405)
     
 
-def actualizar_precio(datos):
+def calcular_precio(datos):
         app_name = 'orders'
         # Obtienemos los modelos de la aplicación
         app_models = apps.get_app_config(app_name).get_models()
@@ -250,3 +251,4 @@ def cart(request):
         return JsonResponse(priceElementSelect, safe=False)
     else:
         return JsonResponse({"mensaje": "Método no permitido"}, status=405)
+

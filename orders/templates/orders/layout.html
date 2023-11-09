@@ -22,7 +22,7 @@
                     <a class="boxitems active" href="#">Carrito</a>
                     {% if user.is_authenticated %}
                     <a class="boxitems active" href="#">{{user}}</a>
-                    <a class="boxitems active" href="/logout">Salir</a>
+                    <a class="boxitems active" id="logout" onclick="salir()">Salir</a>
                     {% else %}
                     <a class="boxitems active" href="/login">login</a>
                     {% endif %}
