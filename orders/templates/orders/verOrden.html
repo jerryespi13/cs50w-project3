@@ -37,7 +37,8 @@
     <div class="datosOrden">
         <br>
         <b>Order ID:</b> {{orden.id}}<br>
-        <b>order date:</b>{{orden.fecha}} <br>
+        <b>order date:</b> {{orden.fecha}} <br>
+        <b>order state:</b> {{orden.get_estado_display}} <br>
     </div>
 </div>
 
@@ -47,6 +48,7 @@
                 <tr>
                     <th>Qty</th>
                     <th>Product</th>
+                    <th>Size</th>
                     <th>Topping / Extras</th>
                     <th>Price</th>
                 </tr>
@@ -56,6 +58,7 @@
                 <tr>
                     <td>{{producto.cantidad}}</td>
                     <td>{{producto.name}}</td>
+                    <td>{{producto.size}}</td>
                     <td>
                         {% if producto.toppings.all %}
                             <p>Toppings:</p>
