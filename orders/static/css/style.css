@@ -459,6 +459,13 @@ img.new{
     width: 33px;
 }
 
+.basketlogo .cantidadProductos{
+    font-size:small;
+    font-weight: 700;
+    color: #1f8a3a;
+    position: fixed;
+}
+
 /*Register - login*/
 
 label{

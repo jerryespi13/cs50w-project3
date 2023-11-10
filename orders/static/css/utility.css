@@ -186,9 +186,10 @@ span.selected{
 
                                                                                 /* Resposive design  */
 
-.basketlogo{
+.basketlogo, .cantidadProductos{
     display: none;
 }
+
 @media(max-width : 2484px) and (min-width:1248px) {
     .flex-container{
         display: flex;
@@ -236,7 +237,7 @@ span.selected{
         width: 100%;
     }
 
-    .basketlogo{
+    .basketlogo, .cantidadProductos{
         display: inline;
         position: absolute;
         z-index: 8;

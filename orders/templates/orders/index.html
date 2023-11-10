@@ -6,8 +6,10 @@
 {%block carrito%}
 <aside>
     <div class="logo"> <a href="#"> <img src="{% static 'images/logo.png'%}"></a></div>
-    <div class="basketlogo " onclick="basketshow()"><img
-            src="{% static 'images/icons/basket.webp'%}" alt></div>
+    <div class="basketlogo " onclick="basketshow()">
+        <img src="{% static 'images/icons/basket.webp'%}" alt="imagen de una cesta">
+        <div class="cantidadProductos"></div>
+    </div>
     <div class="flex-basket hide">
         <h2>Tu Carrito</h2>
         <div class="productosCarrito">
