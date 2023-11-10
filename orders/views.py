@@ -295,6 +295,8 @@ def realizar_pedido(request):
             producto_orden.extras.set(extras)
             producto_orden.toppings.set(toppings)
             producto_orden.save()
+            extras = []
+            toppings = []
         nueva_orden.total = totalCart
         nueva_orden.save()
         
@@ -315,3 +317,12 @@ def eliminarPedido(request):
         ordenEliminar = Orden.objects.get(pk=order_id)
         ordenEliminar.delete()
         return redirect(to = "usuario_view")
+    
+def verOrden(request):
+    if request.method == "POST":
+        order_id = request.POST["id"]
+        context = {
+        "user": User.objects.get(username=request.user),
+        "orden":  Orden.objects.get(id=order_id)
+    }
+        return render(request, "orders/verOrden.html", context)

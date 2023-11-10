@@ -608,3 +608,59 @@ label{
     border-color: transparent;
     cursor: pointer;
 }
+
+.pedido{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    background: #ececec;
+}
+
+.pedidoInc{
+    width: 100%;
+    font-size: larger;
+}
+
+.pedidoInc h4{
+    width: 100%;
+    text-align:center;
+    
+}
+
+.informacion{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.pedidoDatos{
+    width: 100%;
+    justify-content: center;
+    justify-items: center;
+}
+
+.pedidoDatos table{
+    width: 100%;
+}
+
+.pedidoDatos table li{
+    list-style: none;
+}
+
+
+.pedidoTotal{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+.pedidoDatos table tr:nth-child(odd) {
+    background-color: #f2f2f2;
+    
+}
+
+.pedidoDatos table tr:nth-child(even) {
+    background-color: #ffffff;
+}

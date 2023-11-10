@@ -1,0 +1,93 @@
+{% extends 'orders/layout.html'%}
+{% load static %}
+
+{% block title %}Usuario |Pinochio´s Pizza{% endblock %}
+{%block main%}
+
+{{productos}}
+<div class="pedido">
+    <div class="pedidoInc">
+        <h4>
+            <i class="fas fa-globe"></i> Pinnocchio´s Pizza, Inc.
+            <small class="">order date: {{orden.fecha}}</small>
+        </h4>
+    </div>
+
+<div class="informacion">
+    <div class="datosEmpresa">
+        From:
+        <address>
+            <strong>Pinocchio´s Pizza</strong><br>
+            74 Winthrop Street<br>
+            Cambridge, MA 02138<br>
+            Phone: (617) 876-4897<br>
+            Email: pinocchiospizza1@gmail.com
+        </address>
+    </div>
+
+    <div class="datosUsuario">
+        To:
+        <address>
+            <strong>{{user.username}}</strong><br>
+            {{user.location}}<br>
+            Phone: {{user.phone}}<br>
+            Email: {{user.email}}
+        </address>
+    </div>
+
+    <div class="datosOrden">
+        <br>
+        <b>Order ID:</b> {{orden.id}}<br>
+    </div>
+</div>
+
+<div class="pedidoDatos">
+        <table class="">
+            <thead>
+                <tr>
+                    <th>Qty</th>
+                    <th>Product</th>
+                    <th>Topping / Extras</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in orden.productos.all %}
+                <tr>
+                    <td>{{producto.cantidad}}</td>
+                    <td>{{producto.name}}</td>
+                    <td>
+                        {% if producto.toppings.all %}
+                            <p>Toppings:</p>
+                            <ul>
+                                {% for topping in producto.toppings.all %}
+                                    <li> - {{ topping.nombre }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if producto.extras.all %}
+                            <p>Extras:</p>
+                            <ul>
+                                {% for extra in producto.extras.all %}
+                                    <li> - {{ extra.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %} 
+                    </td>
+                    <td> $ {{producto.price}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+
+</div>
+
+<div class="pedidoTotal">
+        <table class="">
+        <tr>
+            <th>Total:</th>
+                <td>$ {{orden.total}}</td>
+            </tr>
+        </table>
+</div>
+{%endblock%}
