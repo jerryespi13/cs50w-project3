@@ -35,10 +35,16 @@
                       {{pedido.get_estado_display}}
                     </td>
                     <td>$ {{pedido.total}}</td>
-                    <td>
-                      <form class="eliminarPedido" action="#">
-                        <input type="text"name="id" value="1">
+                    <td class="botonesPedidos">
+                      <form class="eliminarPedido" action="eliminarPedido" method="post">
+                        {% csrf_token %}
+                        <input type="text"name="id" value="{{pedido.id}}">
                         <button><i class="fas fa-trash-alt fa-lg fa-fw"></i></button>
+                      </form>
+                      <form class="verPedido" action="#">
+                        {% csrf_token %}
+                        <input type="text"name="id" value="{{pedido.id}}">
+                        <button><i class="fas fa-eye fa-sm fa-fw"></i></button>
                       </form>
                     </td>
                   </tr>

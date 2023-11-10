@@ -55,7 +55,6 @@ def register(request):
             return render(request, "orders/register.html")
 
         elif contraseña == confirmacion:
-            print("contraseñas iguales")
             if User.objects.filter(username=usuario).exists():
                 messages.info(request, "Usuario ya existe")
                 return render(request, 'orders/register.html')
@@ -105,7 +104,6 @@ def change_Price(request):
         datos = json.loads(request.body)
 
         # obtenemos el precio del producto
-        print(datos)
         precioProducto = calcular_precio(datos)
 
         return JsonResponse(precioProducto, safe=False)
@@ -221,7 +219,6 @@ def cart(request):
 
                         # si viene uno o mas extras seleccionados
                         if datos["extrasSelected"]:
-                            print("extra")
                             # sumamos el precio de cada extra
                             for i in range(len(datos["extrasSelected"])):
                                 for extra in producto.extras.all():
@@ -281,22 +278,16 @@ def realizar_pedido(request):
             cantidad = datos[0][i]["cantidad"]
             size = datos[0][i]["sizeElement"]
             tamaño = Tamaño.objects.get(nombre=size) if size else None
-            print(datos[0][i])
             if "toppingsSelected" in datos[0][i] and datos[0][i]["toppingsSelected"]:
-                print(datos[0][i]["toppingsSelected"])
                 toppings = Topping.objects.filter(nombre__in= datos[0][i]["toppingsSelected"])
-                print(toppings)
             if "extrasSelected" in datos[0][i] and datos[0][i]["extrasSelected"]:
-                print(datos[0][i]["extrasSelected"])
                 extras = extras = Extra.objects.filter(name__in=datos[0][i]["extrasSelected"])
-                print(extras)
+
             # calculamos el precio de cada producto multiplicado por su cantidad
             priceElement = calcular_precio(datos[0][i])
             precio = priceElement * datos[0][i]["cantidad"]
             # el precio de cada producto se va sumanando al total
             totalCart += precio
-            print(precio)
-            print("-------------------------------------------------------")
             # Crea una nueva instancia de OrdenProducto para cada producto
             producto_orden = OrdenProducto(orden=nueva_orden, cantidad=cantidad, name=nombre, size=tamaño, price=priceElement)
             # Agrega extras y toppings al producto
@@ -304,7 +295,6 @@ def realizar_pedido(request):
             producto_orden.extras.set(extras)
             producto_orden.toppings.set(toppings)
             producto_orden.save()
-        print(totalCart)
         nueva_orden.total = totalCart
         nueva_orden.save()
         
@@ -317,5 +307,11 @@ def usuario_view(request):
         "user": User.objects.get(username=request.user),
         "orders": Orden.objects.filter(usuario=request.user)
     }
-    print(context)
     return render(request, "orders/user.html", context) 
+
+def eliminarPedido(request):
+    if request.method == "POST":
+        order_id = request.POST["id"]
+        ordenEliminar = Orden.objects.get(pk=order_id)
+        ordenEliminar.delete()
+        return redirect(to = "usuario_view")

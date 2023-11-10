@@ -575,10 +575,17 @@ label{
     background-color: #fff;
 }
 
-.eliminarPedido{
+.botonesPedidos{
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+}
+
+.eliminarPedido, .verPedido{
     display: flex;
     flex-wrap: wrap;
     width: 50px;
+    padding: 2px;
 }
 .eliminarPedido button{
     width: 30px;
@@ -589,6 +596,15 @@ label{
     cursor: pointer;
 }
 
-.eliminarPedido input{
+.eliminarPedido input, .verPedido input{
     display: none;
+}
+
+.verPedido button{
+    width: 30px;
+    height: 30px;
+    background: #1f8a3a;
+    border-radius: 10px;
+    border-color: transparent;
+    cursor: pointer;
 }
