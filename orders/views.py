@@ -11,6 +11,7 @@ from .models import *
 from django.contrib.auth.models import User
 # para mensajes 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -104,6 +105,7 @@ def change_Price(request):
         datos = json.loads(request.body)
 
         # obtenemos el precio del producto
+        print(datos)
         precioProducto = calcular_precio(datos)
 
         return JsonResponse(precioProducto, safe=False)
@@ -135,22 +137,21 @@ def calcular_precio(datos):
                     # para los productos que no tienen size, que solo tinenen un precio: pasta y Salads
                     if not datos["sizeElement"]:
                         priceElementSelect = producto.price
-                        return priceElementSelect
+                        #return priceElementSelect
 
                     # si el tamaño seleccionado es Small
                     if datos["sizeElement"] == "Small":
                         priceElementSelect = producto.small_price
 
                         # si viene uno o mas extras seleccionados
-                        if datos["nombreExtra"]:
+                        if datos["extrasSelected"]:
                             # sumamos el precio de cada extra
-                            for _ in range(datos["numerosExtras"]):
+                            for i in range(len(datos["extrasSelected"])):
                                 for extra in producto.extras.all():
-                                    if datos["nombreExtra"] == extra.name:
+                                    if datos["extrasSelected"][i] == extra.name:
                                         precioExtra += extra.price
                             # y al precio del elemento se le suma el precio de los extras totales
                             nuevoPrecioProducto = priceElementSelect + precioExtra
-
                             # retornamos el precio del elemento mas el total de los extras
                             return nuevoPrecioProducto
 
@@ -159,11 +160,11 @@ def calcular_precio(datos):
                         priceElementSelect = producto.large_price
 
                          # si viene uno o mas extras seleccionados
-                        if datos["nombreExtra"]:
+                        if datos["extrasSelected"]:
                             # sumamos el precio de cada extra
-                            for _ in range(datos["numerosExtras"]):
+                            for i in range(len(datos["extrasSelected"])):
                                 for extra in producto.extras.all():
-                                    if datos["nombreExtra"] == extra.name:
+                                    if datos["extrasSelected"][i] == extra.name:
                                         precioExtra += extra.price
                             # y al precio del elemento se le suma el precio de los extras totales
                             nuevoPrecioProducto = priceElementSelect + precioExtra
@@ -258,23 +259,63 @@ def cart(request):
 
 def realizar_pedido(request):
     if request.method == "POST":
-        print("aqui andamos")
+        extras = []
+        toppings = []
+        size = ""
+        nombre =""
+        cantidad = 0
+        priceElement = 0
         # obtenemos los datos
         totalCart = 0
         datos = json.loads(request.body) 
         # el usuario siempre viene de ultimo en la variable datos
         usuario = datos[-1]
-        print(usuario)
-        print(len(datos[0]))
-        
+
+        #creamos la instancia de la orden
+        usuario_orden = User.objects.get(username=usuario)
+        nueva_orden = Orden(usuario=usuario_orden)
+        nueva_orden.save()
+
         for i in range(len(datos[0])):
+            nombre = datos[0][i]["nombreElement"]
+            cantidad = datos[0][i]["cantidad"]
+            size = datos[0][i]["sizeElement"]
+            tamaño = Tamaño.objects.get(nombre=size) if size else None
             print(datos[0][i])
+            if "toppingsSelected" in datos[0][i] and datos[0][i]["toppingsSelected"]:
+                print(datos[0][i]["toppingsSelected"])
+                toppings = Topping.objects.filter(nombre__in= datos[0][i]["toppingsSelected"])
+                print(toppings)
+            if "extrasSelected" in datos[0][i] and datos[0][i]["extrasSelected"]:
+                print(datos[0][i]["extrasSelected"])
+                extras = extras = Extra.objects.filter(name__in=datos[0][i]["extrasSelected"])
+                print(extras)
             # calculamos el precio de cada producto multiplicado por su cantidad
-            precio = calcular_precio(datos[0][i]) * datos[0][i]["cantidad"]
+            priceElement = calcular_precio(datos[0][i])
+            precio = priceElement * datos[0][i]["cantidad"]
             # el precio de cada producto se va sumanando al total
             totalCart += precio
             print(precio)
             print("-------------------------------------------------------")
+            # Crea una nueva instancia de OrdenProducto para cada producto
+            producto_orden = OrdenProducto(orden=nueva_orden, cantidad=cantidad, name=nombre, size=tamaño, price=priceElement)
+            # Agrega extras y toppings al producto
+            producto_orden.save()
+            producto_orden.extras.set(extras)
+            producto_orden.toppings.set(toppings)
+            producto_orden.save()
         print(totalCart)
+        nueva_orden.total = totalCart
+        nueva_orden.save()
+        
 
         return JsonResponse({"mensaje":"llego"})
+
+@login_required
+def usuario_view(request):
+    context = {
+        "user": User.objects.get(username=request.user),
+        "orders": Orden.objects.filter(usuario=request.user)
+    }
+    print(context)
+    return render(request, "orders/user.html", context) 

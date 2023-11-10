@@ -1,0 +1,54 @@
+{% extends 'orders/layout.html'%}
+{% load static %}
+
+{% block title %}Usuario |Pinochio´s Pizza{% endblock %}
+{%block main%}
+    <article class="infoUsuario">
+        <img src="/media/{{user.picture}}" alt="">
+        <div class="info">
+            <h1> <i class="fa fa-user-circle" aria-hidden="true"></i> {{user.username}}</h1>
+            <h3> <i class="fas fa-directions"></i> {{user.location}}</h3>
+        </div>
+    </article>
+    <section>
+        <h2 class="heading">Pedidos</h2>
+        <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Pedidos del Usuario: {{user.username}}</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th>Precio</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for pedido in orders %}
+                  <tr>
+                    <td>Orden # {{pedido.id}} {{pedido.usuario}}</td>
+                    <td>
+                      {{pedido.get_estado_display}}
+                    </td>
+                    <td>$ {{pedido.total}}</td>
+                    <td>
+                      <form class="eliminarPedido" action="#">
+                        <input type="text"name="id" value="1">
+                        <button><i class="fas fa-trash-alt fa-lg fa-fw"></i></button>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr>
+                  {%endfor%}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+    </section>
+{%endblock%}

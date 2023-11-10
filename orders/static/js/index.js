@@ -8,9 +8,15 @@ if(cesta === null){
   }
 
 // contenedor del carrito
-const cartContainer = document.querySelector(".productosCarrito")
+let cartContainer = ""
+if(document.querySelector(".productosCarrito")){
+    cartContainer = document.querySelector(".productosCarrito")
+}
 // total del carrito
-const totalCart = document.querySelector(".totalCarrito")
+let totalCart = ""
+if(document.querySelector(".totalCarrito")){
+    totalCart = document.querySelector(".totalCarrito")
+}
 // dropdown menu 
 const dropdowns = document.querySelectorAll('.dropdown');
 // extras
@@ -101,6 +107,7 @@ extras.forEach(extra =>{
     const extraSelect = extra.querySelectorAll('.inputExtra')
     extraSelect.forEach(extraClick =>{
         extraClick.addEventListener('click', ()=>{
+            let extraSelected = []
             let padreNode = extraClick.parentElement.parentElement.parentElement
             let nombreProducto = padreNode.querySelector(".mainname2").innerText
             let sizeElement = padreNode.querySelector(".selected").innerHTML
@@ -109,11 +116,13 @@ extras.forEach(extra =>{
             let idElement = parseInt(padreNode.querySelector(".id_producto").innerHTML)
             // si se da check en un extra, se suma el precio de ese extra
             if (extraClick.checked){
+                extraSelected.push(nombreExtra)
                 numerosExtras +=1
             }
             // si se descheckea un extra se resta el precio de ese extra
             else if (!extraClick.checked){
                 numerosExtras -= 1
+                extraSelected = []
             }
             // actualizamos el precio
             datos = {
@@ -121,7 +130,8 @@ extras.forEach(extra =>{
                 "nombreElement": nombreProducto,
                 "nombreExtra": nombreExtra,
                 "sizeElement": sizeElement,
-                "numerosExtras": numerosExtras
+                "numerosExtras": numerosExtras,
+                "extrasSelected": extraSelected
             }
             // Actualizamos el precio
             actualizarPrecio(datos, priceElement) 
@@ -172,7 +182,10 @@ function actualizarPrecio( datos, priceElement){
 
 function printCart(){
     cartContainer.innerHTML = ""
-    totalCart.lastElementChild.innerHTML =""
+    if(totalCart !== ""){
+
+        totalCart.lastElementChild.innerHTML =""
+    }
     cesta.forEach(product=>{
         if (product["extrasSelected"]){
             cartContainer.innerHTML += `
@@ -415,6 +428,7 @@ function realizarPedido(){
     let dato = []
     dato.push(cesta)
     dato.push(usuario)
+    console.log(cesta)
     fetch(`${window.origin}/realizar_pedido`, {
         method: 'POST',
         headers: {
@@ -429,6 +443,7 @@ function realizarPedido(){
     cesta = []
     localStorage.removeItem("cart")
     printCart()
+    window.location.href = `${window.origin}/usuario`
 }
     );
 }
