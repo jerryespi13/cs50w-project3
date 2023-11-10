@@ -2,7 +2,7 @@ let numerosExtras = 0;
 
 let currency = "$ "
 
-let cesta = localStorage.getItem("cart")
+let cesta = JSON.parse(localStorage.getItem("cart"))
 if(cesta === null){
     cesta = []
   }
@@ -29,6 +29,11 @@ if(document.getElementById("usuario")){
     usuario = document.getElementById("usuario").innerText
 }
 
+let cantidadProductos =""
+if (document.querySelector(".cantidadProductos")){
+    cantidadProductos = document.querySelector(".cantidadProductos")
+    cantidadProductos.innerText = cesta.length
+}
 
 // obtenemos csrftoken para poder trabajar con fetch
 function getCookie(name) {
@@ -257,6 +262,7 @@ function clearCart() {
     cesta = [];
     printCart();
     totalCart.lastElementChild.innerHTML = ""
+    cantidadProductos.innerText = 0
 }
 
 function total(){
@@ -277,6 +283,7 @@ function eliminar(id){
             break
         }
     }
+    cantidadProductos.innerText = cesta.length
     printCart();
 }
 
@@ -398,6 +405,7 @@ for (let i = 0; i < buttons.length; i++) {
             datosCart["precio"] = data
             cesta.push(datosCart)
             printCart()
+            cantidadProductos.innerText = cesta.length
             }
         );
     });
