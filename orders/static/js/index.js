@@ -102,17 +102,17 @@ let Basket = document.querySelector(".flex-basket");
 function basketshow(){
     Basket.classList.toggle("hide")
 }
-
+let extraSelected = []
 extras.forEach(extra =>{
     const extraSelect = extra.querySelectorAll('.inputExtra')
     extraSelect.forEach(extraClick =>{
         extraClick.addEventListener('click', ()=>{
-            let extraSelected = []
+            
             let padreNode = extraClick.parentElement.parentElement.parentElement
             let nombreProducto = padreNode.querySelector(".mainname2").innerText
             let sizeElement = padreNode.querySelector(".selected").innerHTML
             let nombreExtra = extraClick.parentElement.innerText.split(" $")[0]
-            var priceElement = padreNode.querySelector(".sideprice")
+            let priceElement = padreNode.querySelector(".sideprice")
             let idElement = parseInt(padreNode.querySelector(".id_producto").innerHTML)
             // si se da check en un extra, se suma el precio de ese extra
             if (extraClick.checked){
@@ -122,8 +122,9 @@ extras.forEach(extra =>{
             // si se descheckea un extra se resta el precio de ese extra
             else if (!extraClick.checked){
                 numerosExtras -= 1
-                extraSelected = []
+                extraSelected = extraSelected.filter(item => item !== nombreExtra)
             }
+            console.log(extraSelected)
             // actualizamos el precio
             datos = {
                 "idElement": idElement,

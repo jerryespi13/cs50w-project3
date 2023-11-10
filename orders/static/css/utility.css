@@ -232,8 +232,8 @@ span.selected{
         visibility: hidden;
         border: none;
     }
-    #checkout{
-        width: 16rem;
+    #checkout, #vaciar, #checkout_noSesion{
+        width: 100%;
     }
 
     .basketlogo{
@@ -305,5 +305,13 @@ span.selected{
 
     .register-button, .login-button{
         width: 70%;
+    }
+
+    .informacion{
+        flex-direction: column;
+    }
+
+    .pedidoInc h4{
+        flex-direction: column;
     }
 }

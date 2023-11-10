@@ -86,10 +86,10 @@ header {
 
 .flex-basket h2 {
     display: flex;
-    margin-top: 37px;
+
     font-weight: bolder;
     font-size: x-large;
-    height: auto;
+    height: 40px;
     justify-content: center;
 }
 
@@ -103,7 +103,7 @@ header {
     scroll-behavior: smooth;
     scrollbar-gutter: stable;
     width: 100%;
-    height: 400px;
+    height: calc(100vh - 130px);
 }
 
 .productosCarrito::-webkit-scrollbar{
@@ -187,7 +187,7 @@ header {
 
 .totalCarrito{
     display: flex;
-    height: 41px;
+    height: 40px;
     font-weight: 800;
     align-items: center;
     justify-content:space-between;
@@ -203,10 +203,11 @@ header {
     cursor: pointer;
     background-color: var(--buttoncolor1);
     color: white;
-    height: 41px;
-    width: 24vw;
+    height: 40px;
+    width: 100%;
     border-radius: 6px;
     border: solid white;
+    padding: 0px 10px;
 }
 
 #checkout_noSesion{
@@ -217,8 +218,8 @@ header {
     cursor: pointer;
     background-color: var(--buttoncolor1);
     color: white;
-    height: 41px;
-    width: 24vw;
+    height: 50px;
+    width: 100%;
     border-radius: 6px;
     border: solid white;
 }
@@ -234,8 +235,8 @@ header {
     cursor: pointer;
     background-color: var(--bordercolor);
     color: black;
-    height: 41px;
-    width: 24vw;
+    height: 40px;
+    width: 100%;
     border-radius: 6px;
     border: solid white;
 }
@@ -646,6 +647,7 @@ label{
 
 .pedidoDatos table li{
     list-style: none;
+    padding-left: 10px;
 }
 
 
