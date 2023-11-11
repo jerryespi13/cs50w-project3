@@ -50,4 +50,8 @@ Web Programming with Python and JavaScript
 >`python manage.py runserver`
 
 ## Toque personal
-### TODO:
+En la vista usuario el usuario será capaz de ver un lista con todas las ordenes que ha realizado. En esta lista se muestra el precio, fecha, numero de orden y estado del pedido.
+### Eliminar un pedido
+En cada pedido hay un botón con el cual se puede eliminar el pedido en cuestion.
+### ver detalles de un pedido
+En cada pedido hay un botón con el cual un usuario sera capaz de poder ver los detalles de un pedido, esto quiere decir que podrá ver cada producto asocioado a ese pedido.
