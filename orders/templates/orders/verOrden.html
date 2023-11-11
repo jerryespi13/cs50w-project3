@@ -58,7 +58,12 @@
                 <tr>
                     <td>{{producto.cantidad}}</td>
                     <td>{{producto.name}}</td>
-                    <td>{{producto.size}}</td>
+                    <td>
+                        {%if producto.size is None%}
+                        {%else%}
+                            {{producto.size}}
+                        {%endif%}
+                    </td>
                     <td>
                         {% if producto.toppings.all %}
                             <p>Toppings:</p>

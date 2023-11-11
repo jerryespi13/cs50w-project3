@@ -2,17 +2,13 @@ from django.contrib import admin
 import orders.models as model
 from.models import User
 
-
 class OrdenProductoInline(admin.TabularInline):
     model = model.OrdenProducto
     extra = 0
 
-
-    
-
 class OrdenAdmin(admin.ModelAdmin):
     inlines = [OrdenProductoInline]
-    list_display=('fecha', 'estado', 'usuario', 'total')
+    list_display=('id', 'fecha', 'estado', 'usuario', 'total')
     list_editable=('estado',)
 
 # Register your models here.

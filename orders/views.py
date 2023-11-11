@@ -13,6 +13,10 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+# no se porque en los celulares me da problema el csrf_token
+# con esto me salto ese problema
+from django.views.decorators.csrf import csrf_exempt
+
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -97,6 +101,7 @@ def logout(request):
     logout_auth(request)
     return JsonResponse("login", safe=False)
 
+@csrf_exempt
 # cambiar precio en pantalla
 def change_Price(request):
     if request.method == 'POST':
@@ -178,6 +183,7 @@ def calcular_precio(datos):
         # se devuelve el precio tipo de tamaño de ese producto
         return priceElementSelect
 
+@csrf_exempt
 def cart(request):
     """Cart
     
@@ -253,7 +259,8 @@ def cart(request):
         return JsonResponse(priceElementSelect, safe=False)
     else:
         return JsonResponse({"mensaje": "Método no permitido"}, status=405)
-
+    
+@csrf_exempt
 def realizar_pedido(request):
     if request.method == "POST":
         extras = []
